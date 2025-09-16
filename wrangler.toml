@@ -1,11 +1,17 @@
 name = "steganography-app"
-type = "webpack"
-account_id = "" # 需要填写您的Cloudflare账户ID
+main = "workers-site/index.js"
+compatibility_date = "2025-09-16"
 
 [site]
 bucket = "./" # 静态资源目录
-entry-point = "workers-site"
 
+# 开发环境配置
+[env.dev]
+workers_dev = true
+
+# 生产环境配置
 [env.production]
-route = "" # 需要填写您的自定义域名，例如 "steganography.example.com/*"
-zone_id = "" # 需要填写您的Cloudflare区域ID
+workers_dev = true
+# 如果有自定义域名，可以取消下面两行的注释并填写
+# route = "your-domain.com/*"
+# zone_id = ""
