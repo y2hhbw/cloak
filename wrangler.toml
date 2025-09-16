@@ -1,0 +1,11 @@
+name = "steganography-app"
+type = "webpack"
+account_id = "" # 需要填写您的Cloudflare账户ID
+
+[site]
+bucket = "./" # 静态资源目录
+entry-point = "workers-site"
+
+[env.production]
+route = "" # 需要填写您的自定义域名，例如 "steganography.example.com/*"
+zone_id = "" # 需要填写您的Cloudflare区域ID

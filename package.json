@@ -1,0 +1,18 @@
+{
+  "name": "steganography-app",
+  "version": "1.0.0",
+  "description": "图片隐写术工具 - 在图片中隐藏和提取文字信息",
+  "main": "workers-site/index.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "publish": "wrangler publish"
+  },
+  "dependencies": {
+    "@cloudflare/kv-asset-handler": "^0.3.0"
+  },
+  "devDependencies": {
+    "@cloudflare/wrangler": "^3.0.0"
+  },
+  "author": "",
+  "license": "MIT"
+}
