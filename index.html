@@ -62,7 +62,8 @@
         <p id="app-description" class="description">Hide text messages in images or extract hidden text from images. All operations are performed in your browser, no data is uploaded.</p>
         
         <div class="tabs">
-            <button id="tab-encode" class="tab-btn active" data-tab="encode">Encode Message</button>
+            <button id="tab-about" class="tab-btn active" data-tab="about">Why Better</button>
+            <button id="tab-encode" class="tab-btn" data-tab="encode">Encode Message</button>
             <button id="tab-decode" class="tab-btn" data-tab="decode">Decode Message</button>
             <button id="tab-crypto" class="tab-btn" data-tab="crypto">Crypto Wallet</button>
             <button id="tab-tutorial" class="tab-btn" data-tab="tutorial">Tutorial</button>
@@ -70,7 +71,102 @@
         </div>
         
         <div class="tab-content">
-            <div id="encode" class="tab-pane active">
+            <div id="about" class="tab-pane active">
+                <div class="about-hero">
+                    <h2 class="about-title">Why cloak is a Better Image Steganography Tool</h2>
+                    <p class="about-subtitle">The most secure, feature-rich, and user-friendly steganography tool available online</p>
+                </div>
+
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3 id="feature-security-title">Maximum Security</h3>
+                        <p id="feature-security-desc">All operations happen in your browser. No data is ever uploaded to any server, ensuring complete privacy and security.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">🌍</div>
+                        <h3 id="feature-multilang-title">Multi-Language Support</h3>
+                        <p id="feature-multilang-desc">Available in 8 languages including English, Chinese, French, Japanese, Spanish, German, and Russian.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">⚙️</div>
+                        <h3 id="feature-algorithms-title">Multiple Algorithms</h3>
+                        <p id="feature-algorithms-desc">Supports LSB, DCT, and Patchwork steganography algorithms with auto-detection for maximum compatibility.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">🔐</div>
+                        <h3 id="feature-password-title">Password Protection</h3>
+                        <p id="feature-password-desc">Optional password encryption adds an extra layer of security to your hidden messages.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">💰</div>
+                        <h3 id="feature-crypto-title">Crypto Wallet Support</h3>
+                        <p id="feature-crypto-desc">Specialized features for securely hiding cryptocurrency private keys and recovery phrases.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">🎯</div>
+                        <h3 id="feature-usability-title">Easy to Use</h3>
+                        <p id="feature-usability-desc">Intuitive interface with drag-and-drop support, real-time validation, and comprehensive tutorials.</p>
+                    </div>
+                </div>
+
+                <div class="comparison-section">
+                    <h3 class="comparison-title">Why Choose cloak Over Other Tools?</h3>
+                    <div class="comparison-table">
+                        <div class="comparison-row comparison-header">
+                            <div class="comparison-feature comparison-feature-header">Feature</div>
+                            <div class="comparison-cloak comparison-cloak-header">cloak</div>
+                            <div class="comparison-others comparison-others-header">Other Tools</div>
+                        </div>
+                        <div class="comparison-row">
+                            <div class="comparison-feature comparison-browser-based">Browser-based</div>
+                            <div class="comparison-cloak">✅</div>
+                            <div class="comparison-others">❌</div>
+                        </div>
+                        <div class="comparison-row">
+                            <div class="comparison-feature comparison-no-upload">No Data Upload</div>
+                            <div class="comparison-cloak">✅</div>
+                            <div class="comparison-others">❌</div>
+                        </div>
+                        <div class="comparison-row">
+                            <div class="comparison-feature comparison-multi-algo">Multiple Algorithms</div>
+                            <div class="comparison-cloak">✅</div>
+                            <div class="comparison-others">⚠️</div>
+                        </div>
+                        <div class="comparison-row">
+                            <div class="comparison-feature comparison-crypto-support">Crypto Wallet Support</div>
+                            <div class="comparison-cloak">✅</div>
+                            <div class="comparison-others">❌</div>
+                        </div>
+                        <div class="comparison-row">
+                            <div class="comparison-feature comparison-multilang">Multi-language</div>
+                            <div class="comparison-cloak">✅</div>
+                            <div class="comparison-others">❌</div>
+                        </div>
+                        <div class="comparison-row">
+                            <div class="comparison-feature comparison-free">Free & Open Source</div>
+                            <div class="comparison-cloak">✅</div>
+                            <div class="comparison-others">⚠️</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cta-section">
+                    <h3 class="cta-title">Ready to Get Started?</h3>
+                    <p class="cta-description">Start hiding your messages securely with the most advanced steganography tool available.</p>
+                    <div class="cta-buttons">
+                        <button class="btn cta-encode primary-btn" data-tab="encode">Start Encoding</button>
+                        <button class="btn cta-tutorial secondary-btn" data-tab="tutorial">View Tutorial</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="encode" class="tab-pane">
                 <h2 id="encode-title">Hide Message in Image</h2>
                 <p id="encode-description">Select an image, enter the text you want to hide, then click the "Encode" button. Save the generated image, it will contain your hidden message.</p>
                 <div class="form-group">
@@ -180,7 +276,7 @@
                 </div>
                 
                 <div id="private-key-input" class="form-group">
-                    <label for="private-key">Private Key:</label>
+                    <label for="private-key" id="label-private-key">Private Key:</label>
                     <div class="password-container">
                         <input type="password" id="private-key" placeholder="Enter your private key...">
                         <button id="toggle-key-visibility" class="small-btn">Show</button>

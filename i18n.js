@@ -28,11 +28,42 @@ const I18N = {
             'app_description': 'Hide text messages in images or extract hidden text from images. All operations are performed in your browser, no data is uploaded.',
             
             // 标签页
+            'tab_about': 'Why Better',
             'tab_encode': 'Encode Message',
             'tab_decode': 'Decode Message',
             'tab_crypto': 'Crypto Wallet',
             'tab_tutorial': 'Tutorial',
             'tab_faq': 'FAQ',
+            
+            // About页面
+            'about_title': 'Why cloak is a Better Image Steganography Tool',
+            'about_subtitle': 'The most secure, feature-rich, and user-friendly steganography tool available online',
+            'feature_security_title': 'Maximum Security',
+            'feature_security_desc': 'All operations happen in your browser. No data is ever uploaded to any server, ensuring complete privacy and security.',
+            'feature_multilang_title': 'Multi-Language Support',
+            'feature_multilang_desc': 'Available in 8 languages including English, Chinese, French, Japanese, Spanish, German, and Russian.',
+            'feature_algorithms_title': 'Multiple Algorithms',
+            'feature_algorithms_desc': 'Supports LSB, DCT, and Patchwork steganography algorithms with auto-detection for maximum compatibility.',
+            'feature_password_title': 'Password Protection',
+            'feature_password_desc': 'Optional password encryption adds an extra layer of security to your hidden messages.',
+            'feature_crypto_title': 'Crypto Wallet Support',
+            'feature_crypto_desc': 'Specialized features for securely hiding cryptocurrency private keys and recovery phrases.',
+            'feature_usability_title': 'Easy to Use',
+            'feature_usability_desc': 'Intuitive interface with drag-and-drop support, real-time validation, and comprehensive tutorials.',
+            'comparison_title': 'Why Choose cloak Over Other Tools?',
+            'comparison_feature_header': 'Feature',
+            'comparison_cloak_header': 'cloak',
+            'comparison_others_header': 'Other Tools',
+            'comparison_browser_based': 'Browser-based',
+            'comparison_no_upload': 'No Data Upload',
+            'comparison_multi_algo': 'Multiple Algorithms',
+            'comparison_crypto_support': 'Crypto Wallet Support',
+            'comparison_multilang': 'Multi-language',
+            'comparison_free': 'Free & Open Source',
+            'cta_title': 'Ready to Get Started?',
+            'cta_description': 'Start hiding your messages securely with the most advanced steganography tool available.',
+            'cta_encode': 'Start Encoding',
+            'cta_tutorial': 'View Tutorial',
             
             // 编码部分
             'encode_title': 'Hide Message in Image',
@@ -184,13 +215,44 @@ const I18N = {
             'app_description': '在图像中隐藏文本信息或从图像中提取隐藏文本。所有操作都在您的浏览器中执行，不会上传任何数据。',
             
             // 标签页
+            'tab_about': '为什么更好',
             'tab_encode': '编码信息',
             'tab_decode': '解码信息',
             'tab_crypto': '加密钱包',
             'tab_tutorial': '教程',
             'tab_faq': '常见问题',
             
-            // 编码部分
+            // About页面
+            'about_title': '为什么cloak是更好的图像隐写工具',
+            'about_subtitle': '最安全、功能最丰富、最用户友好的在线隐写工具',
+            'feature_security_title': '最高安全性',
+            'feature_security_desc': '所有操作都在您的浏览器中进行。没有数据会上传到任何服务器，确保完全的隐私和安全。',
+            'feature_multilang_title': '多语言支持',
+            'feature_multilang_desc': '支持8种语言，包括中文、英文、法文、日文、西班牙文、德文和俄文。',
+            'feature_algorithms_title': '多种算法',
+            'feature_algorithms_desc': '支持LSB、DCT和Patchwork隐写算法，具有自动检测功能，确保最大兼容性。',
+            'feature_password_title': '密码保护',
+            'feature_password_desc': '可选的密码加密为您的隐藏消息增加额外的安全层。',
+            'feature_crypto_title': '加密钱包支持',
+            'feature_crypto_desc': '专门的功能用于安全隐藏加密货币私钥和恢复短语。',
+            'feature_usability_title': '易于使用',
+            'feature_usability_desc': '直观的界面，支持拖放、实时验证和全面的教程。',
+            'comparison_title': '为什么选择cloak而不是其他工具？',
+            'comparison_feature_header': '功能',
+            'comparison_cloak_header': 'cloak',
+            'comparison_others_header': '其他工具',
+            'comparison_browser_based': '基于浏览器',
+            'comparison_no_upload': '无数据上传',
+            'comparison_multi_algo': '多种算法',
+            'comparison_crypto_support': '加密钱包支持',
+            'comparison_multilang': '多语言',
+            'comparison_free': '免费开源',
+            'cta_title': '准备开始了吗？',
+            'cta_description': '使用最先进的隐写工具开始安全地隐藏您的消息。',
+            'cta_encode': '开始编码',
+            'cta_tutorial': '查看教程',
+            
+            // 编码页面编码部分
             'encode_title': '在图像中隐藏信息',
             'encode_description': '选择一张图片，输入您想要隐藏的文本，然后点击"编码"按钮。保存生成的图像，它将包含您的隐藏信息。',
             'select_image': '选择图像：',
@@ -345,11 +407,42 @@ const I18N = {
             'app_description': '在圖像中隱藏文本信息或從圖像中提取隱藏文本。所有操作都在您的瀏覽器中執行，不會上傳任何數據。',
             
             // 標籤頁
+            'tab_about': '為什麼更好',
             'tab_encode': '編碼信息',
             'tab_decode': '解碼信息',
             'tab_crypto': '加密錢包',
             'tab_tutorial': '教程',
             'tab_faq': '常見問題',
+            
+            // About頁面
+            'about_title': '為什麼cloak是更好的圖像隱寫工具',
+            'about_subtitle': '最安全、功能最豐富、最用戶友好的在線隱寫工具',
+            'feature_security_title': '最高安全性',
+            'feature_security_desc': '所有操作都在您的瀏覽器中進行。沒有數據會上傳到任何服務器，確保完全的隱私和安全。',
+            'feature_multilang_title': '多語言支持',
+            'feature_multilang_desc': '支持8種語言，包括英語、中文、法語、日語、西班牙語、德語和俄語。',
+            'feature_algorithms_title': '多種算法',
+            'feature_algorithms_desc': '支持LSB、DCT和拼貼隱寫算法，具有自動檢測功能，實現最大兼容性。',
+            'feature_password_title': '密碼保護',
+            'feature_password_desc': '可選的密碼加密為您的隱藏信息增加額外的安全層。',
+            'feature_crypto_title': '加密錢包支持',
+            'feature_crypto_desc': '專門的功能用於安全隱藏加密貨幣私鑰和恢復短語。',
+            'feature_usability_title': '易於使用',
+            'feature_usability_desc': '直觀的界面，支持拖放、實時驗證和全面的教程。',
+            'comparison_title': '為什麼選擇cloak而不是其他工具？',
+            'comparison_feature_header': '功能',
+            'comparison_cloak_header': 'cloak',
+            'comparison_others_header': '其他工具',
+            'comparison_browser_based': '基於瀏覽器',
+            'comparison_no_upload': '無數據上傳',
+            'comparison_multi_algo': '多種算法',
+            'comparison_crypto_support': '加密錢包支持',
+            'comparison_multilang': '多語言',
+            'comparison_free': '免費開源',
+            'cta_title': '準備開始了嗎？',
+            'cta_description': '使用最先進的隱寫工具開始安全地隱藏您的信息。',
+            'cta_encode': '開始編碼',
+            'cta_tutorial': '查看教程',
             
             // 編碼部分
             'encode_title': '在圖像中隱藏信息',
@@ -496,11 +589,42 @@ const I18N = {
             'app_description': 'Cachez des messages texte dans des images ou extrayez du texte caché des images. Toutes les opérations sont effectuées dans votre navigateur, aucune donnée n\'est téléchargée.',
             
             // Onglets
+            'tab_about': 'Pourquoi Mieux',
             'tab_encode': 'Encoder Message',
             'tab_decode': 'Décoder Message',
             'tab_crypto': 'Portefeuille Crypto',
             'tab_tutorial': 'Tutoriel',
             'tab_faq': 'FAQ',
+            
+            // Page À propos
+            'about_title': 'Pourquoi cloak est un Meilleur Outil de Stéganographie d\'Image',
+            'about_subtitle': 'L\'outil de stéganographie en ligne le plus sécurisé, riche en fonctionnalités et convivial',
+            'feature_security_title': 'Sécurité Maximale',
+            'feature_security_desc': 'Toutes les opérations se déroulent dans votre navigateur. Aucune donnée n\'est jamais téléchargée vers un serveur, garantissant une confidentialité et une sécurité complètes.',
+            'feature_multilang_title': 'Support Multi-langues',
+            'feature_multilang_desc': 'Disponible en 8 langues incluant l\'anglais, le chinois, le français, le japonais, l\'espagnol, l\'allemand et le russe.',
+            'feature_algorithms_title': 'Algorithmes Multiples',
+            'feature_algorithms_desc': 'Prend en charge les algorithmes de stéganographie LSB, DCT et Patchwork avec détection automatique pour une compatibilité maximale.',
+            'feature_password_title': 'Protection par Mot de Passe',
+            'feature_password_desc': 'Le chiffrement par mot de passe optionnel ajoute une couche de sécurité supplémentaire à vos messages cachés.',
+            'feature_crypto_title': 'Support Portefeuille Crypto',
+            'feature_crypto_desc': 'Fonctionnalités spécialisées pour cacher en toute sécurité les clés privées et phrases de récupération de cryptomonnaies.',
+            'feature_usability_title': 'Facile à Utiliser',
+            'feature_usability_desc': 'Interface intuitive avec support glisser-déposer, validation en temps réel et tutoriels complets.',
+            'comparison_title': 'Pourquoi Choisir cloak Plutôt que d\'Autres Outils ?',
+            'comparison_feature_header': 'Fonctionnalité',
+            'comparison_cloak_header': 'cloak',
+            'comparison_others_header': 'Autres Outils',
+            'comparison_browser_based': 'Basé sur navigateur',
+            'comparison_no_upload': 'Aucun téléchargement de données',
+            'comparison_multi_algo': 'Algorithmes multiples',
+            'comparison_crypto_support': 'Support portefeuille crypto',
+            'comparison_multilang': 'Multi-langues',
+            'comparison_free': 'Gratuit et Open Source',
+            'cta_title': 'Prêt à Commencer ?',
+            'cta_description': 'Commencez à cacher vos messages en toute sécurité avec l\'outil de stéganographie le plus avancé disponible.',
+            'cta_encode': 'Commencer l\'Encodage',
+            'cta_tutorial': 'Voir le Tutoriel',
             
             // Section d'encodage
             'encode_title': 'Cacher un Message dans une Image',
@@ -647,11 +771,42 @@ const I18N = {
             'app_description': '画像にテキストメッセージを隠したり、画像から隠しテキストを抽出したりします。すべての操作はブラウザ内で実行され、データはアップロードされません。',
             
             // タブ
+            'tab_about': 'なぜより良いか',
             'tab_encode': 'メッセージを符号化',
             'tab_decode': 'メッセージを復号化',
             'tab_crypto': '暗号ウォレット',
             'tab_tutorial': 'チュートリアル',
             'tab_faq': 'よくある質問',
+            
+            // About ページ
+            'about_title': 'なぜcloakがより良い画像ステガノグラフィーツールなのか',
+            'about_subtitle': 'オンラインで利用可能な最も安全で機能豊富、そしてユーザーフレンドリーなステガノグラフィーツール',
+            'feature_security_title': '最大限のセキュリティ',
+            'feature_security_desc': 'すべての操作はブラウザ内で実行されます。データがサーバーにアップロードされることは一切なく、完全なプライバシーとセキュリティを保証します。',
+            'feature_multilang_title': '多言語サポート',
+            'feature_multilang_desc': '英語、中国語、フランス語、日本語、スペイン語、ドイツ語、ロシア語を含む8言語で利用可能です。',
+            'feature_algorithms_title': '複数のアルゴリズム',
+            'feature_algorithms_desc': 'LSB、DCT、Patchworkステガノグラフィーアルゴリズムをサポートし、最大限の互換性のための自動検出機能付き。',
+            'feature_password_title': 'パスワード保護',
+            'feature_password_desc': 'オプションのパスワード暗号化により、隠しメッセージにさらなるセキュリティ層を追加します。',
+            'feature_crypto_title': '暗号ウォレットサポート',
+            'feature_crypto_desc': '暗号通貨の秘密鍵と復旧フレーズを安全に隠すための専用機能。',
+            'feature_usability_title': '使いやすさ',
+            'feature_usability_desc': 'ドラッグアンドドロップサポート、リアルタイム検証、包括的なチュートリアルを備えた直感的なインターフェース。',
+            'comparison_title': '他のツールよりもcloakを選ぶ理由は？',
+            'comparison_feature_header': '機能',
+            'comparison_cloak_header': 'cloak',
+            'comparison_others_header': '他のツール',
+            'comparison_browser_based': 'ブラウザベース',
+            'comparison_no_upload': 'データアップロードなし',
+            'comparison_multi_algo': '複数のアルゴリズム',
+            'comparison_crypto_support': '暗号ウォレットサポート',
+            'comparison_multilang': '多言語対応',
+            'comparison_free': '無料＆オープンソース',
+            'cta_title': '始める準備はできましたか？',
+            'cta_description': '利用可能な最も高度なステガノグラフィーツールで、メッセージを安全に隠し始めましょう。',
+            'cta_encode': 'エンコードを開始',
+            'cta_tutorial': 'チュートリアルを見る',
             
             // エンコード部分
             'encode_title': '画像にメッセージを隠す',
@@ -798,11 +953,42 @@ const I18N = {
             'app_description': 'Oculta mensajes de texto en imágenes o extrae texto oculto de imágenes. Todas las operaciones se realizan en tu navegador, no se sube ningún dato.',
             
             // Pestañas
+            'tab_about': 'Por Qué Mejor',
             'tab_encode': 'Codificar Mensaje',
             'tab_decode': 'Decodificar Mensaje',
             'tab_crypto': 'Monedero Cripto',
             'tab_tutorial': 'Tutorial',
             'tab_faq': 'Preguntas Frecuentes',
+            
+            // Página About
+            'about_title': 'Por Qué cloak es una Mejor Herramienta de Esteganografía de Imagen',
+            'about_subtitle': 'La herramienta de esteganografía más segura, rica en funciones y fácil de usar disponible en línea',
+            'feature_security_title': 'Máxima Seguridad',
+            'feature_security_desc': 'Todas las operaciones ocurren en tu navegador. Nunca se sube ningún dato a ningún servidor, garantizando completa privacidad y seguridad.',
+            'feature_multilang_title': 'Soporte Multiidioma',
+            'feature_multilang_desc': 'Disponible en 8 idiomas incluyendo inglés, chino, francés, japonés, español, alemán y ruso.',
+            'feature_algorithms_title': 'Múltiples Algoritmos',
+            'feature_algorithms_desc': 'Soporta algoritmos de esteganografía LSB, DCT y Patchwork con detección automática para máxima compatibilidad.',
+            'feature_password_title': 'Protección con Contraseña',
+            'feature_password_desc': 'El cifrado opcional con contraseña añade una capa extra de seguridad a tus mensajes ocultos.',
+            'feature_crypto_title': 'Soporte para Monedero Cripto',
+            'feature_crypto_desc': 'Funciones especializadas para ocultar de forma segura claves privadas de criptomonedas y frases de recuperación.',
+            'feature_usability_title': 'Fácil de Usar',
+            'feature_usability_desc': 'Interfaz intuitiva con soporte de arrastrar y soltar, validación en tiempo real y tutoriales completos.',
+            'comparison_title': '¿Por Qué Elegir cloak Sobre Otras Herramientas?',
+            'comparison_feature_header': 'Característica',
+            'comparison_cloak_header': 'cloak',
+            'comparison_others_header': 'Otras Herramientas',
+            'comparison_browser_based': 'Basado en navegador',
+            'comparison_no_upload': 'Sin subida de datos',
+            'comparison_multi_algo': 'Múltiples algoritmos',
+            'comparison_crypto_support': 'Soporte para monedero cripto',
+            'comparison_multilang': 'Multiidioma',
+            'comparison_free': 'Gratis y código abierto',
+            'cta_title': '¿Listo para Empezar?',
+            'cta_description': 'Comienza a ocultar tus mensajes de forma segura con la herramienta de esteganografía más avanzada disponible.',
+            'cta_encode': 'Comenzar Codificación',
+            'cta_tutorial': 'Ver Tutorial',
             
             // Sección de codificación
             'encode_title': 'Ocultar un Mensaje en una Imagen',
@@ -949,11 +1135,42 @@ const I18N = {
             'app_description': 'Verstecken Sie Textnachrichten in Bildern oder extrahieren Sie versteckten Text aus Bildern. Alle Operationen werden in Ihrem Browser ausgeführt, es werden keine Daten hochgeladen.',
             
             // Tabs
+            'tab_about': 'Warum Besser',
             'tab_encode': 'Nachricht Codieren',
             'tab_decode': 'Nachricht Decodieren',
             'tab_crypto': 'Krypto-Wallet',
             'tab_tutorial': 'Tutorial',
             'tab_faq': 'FAQ',
+            
+            // About-Bereich
+            'about_title': 'Warum cloak ein besseres Bild-Steganographie-Tool ist',
+            'about_subtitle': 'Das sicherste, funktionsreichste und benutzerfreundlichste Steganographie-Tool online verfügbar',
+            'feature_security_title': 'Maximale Sicherheit',
+            'feature_security_desc': 'Alle Operationen finden in Ihrem Browser statt. Keine Daten werden jemals auf einen Server hochgeladen, was vollständige Privatsphäre und Sicherheit gewährleistet.',
+            'feature_multilang_title': 'Mehrsprachige Unterstützung',
+            'feature_multilang_desc': 'Verfügbar in 8 Sprachen einschließlich Englisch, Chinesisch, Französisch, Japanisch, Spanisch, Deutsch und Russisch.',
+            'feature_algorithms_title': 'Mehrere Algorithmen',
+            'feature_algorithms_desc': 'Unterstützt LSB-, DCT- und Patchwork-Steganographie-Algorithmen mit automatischer Erkennung für maximale Kompatibilität.',
+            'feature_password_title': 'Passwortschutz',
+            'feature_password_desc': 'Optionale Passwort-Verschlüsselung fügt eine zusätzliche Sicherheitsebene zu Ihren versteckten Nachrichten hinzu.',
+            'feature_crypto_title': 'Krypto-Wallet-Unterstützung',
+            'feature_crypto_desc': 'Spezialisierte Funktionen zum sicheren Verstecken von Kryptowährungs-Private-Keys und Wiederherstellungsphrasen.',
+            'feature_usability_title': 'Einfach zu verwenden',
+            'feature_usability_desc': 'Intuitive Benutzeroberfläche mit Drag-and-Drop-Unterstützung, Echtzeit-Validierung und umfassenden Tutorials.',
+            'comparison_title': 'Warum cloak über andere Tools wählen?',
+            'comparison_feature_header': 'Funktion',
+            'comparison_cloak_header': 'cloak',
+            'comparison_others_header': 'Andere Tools',
+            'comparison_browser_based': 'Browser-basiert',
+            'comparison_no_upload': 'Kein Daten-Upload',
+            'comparison_multi_algo': 'Mehrere Algorithmen',
+            'comparison_crypto_support': 'Krypto-Wallet-Unterstützung',
+            'comparison_multilang': 'Mehrsprachig',
+            'comparison_free': 'Kostenlos & Open Source',
+            'cta_title': 'Bereit loszulegen?',
+            'cta_description': 'Beginnen Sie sicher Ihre Nachrichten zu verstecken mit dem fortschrittlichsten verfügbaren Steganographie-Tool.',
+            'cta_encode': 'Codierung starten',
+            'cta_tutorial': 'Tutorial ansehen',
             
             // Codierungsbereich
             'encode_title': 'Eine Nachricht in einem Bild verstecken',
@@ -1100,11 +1317,42 @@ const I18N = {
             'app_description': 'Скрывайте текстовые сообщения в изображениях или извлекайте скрытый текст из изображений. Все операции выполняются в вашем браузере, данные не загружаются.',
             
             // Вкладки
+            'tab_about': 'Почему Лучше',
             'tab_encode': 'Кодировать Сообщение',
             'tab_decode': 'Декодировать Сообщение',
             'tab_crypto': 'Крипто Кошелек',
             'tab_tutorial': 'Руководство',
             'tab_faq': 'Часто Задаваемые Вопросы',
+            
+            // Раздел About
+            'about_title': 'Почему cloak - лучший инструмент стеганографии изображений',
+            'about_subtitle': 'Самый безопасный, функциональный и удобный инструмент стеганографии, доступный онлайн',
+            'feature_security_title': 'Максимальная безопасность',
+            'feature_security_desc': 'Все операции происходят в вашем браузере. Никакие данные никогда не загружаются на сервер, обеспечивая полную конфиденциальность и безопасность.',
+            'feature_multilang_title': 'Многоязычная поддержка',
+            'feature_multilang_desc': 'Доступен на 8 языках, включая английский, китайский, французский, японский, испанский, немецкий и русский.',
+            'feature_algorithms_title': 'Множественные алгоритмы',
+            'feature_algorithms_desc': 'Поддерживает алгоритмы стеганографии LSB, DCT и Patchwork с автоматическим определением для максимальной совместимости.',
+            'feature_password_title': 'Защита паролем',
+            'feature_password_desc': 'Дополнительное шифрование паролем добавляет дополнительный уровень безопасности к вашим скрытым сообщениям.',
+            'feature_crypto_title': 'Поддержка крипто-кошелька',
+            'feature_crypto_desc': 'Специализированные функции для безопасного скрытия приватных ключей криптовалют и фраз восстановления.',
+            'feature_usability_title': 'Простота использования',
+            'feature_usability_desc': 'Интуитивный интерфейс с поддержкой перетаскивания, проверкой в реальном времени и подробными руководствами.',
+            'comparison_title': 'Почему выбрать cloak вместо других инструментов?',
+            'comparison_feature_header': 'Функция',
+            'comparison_cloak_header': 'cloak',
+            'comparison_others_header': 'Другие инструменты',
+            'comparison_browser_based': 'Браузерный',
+            'comparison_no_upload': 'Без загрузки данных',
+            'comparison_multi_algo': 'Множественные алгоритмы',
+            'comparison_crypto_support': 'Поддержка крипто-кошелька',
+            'comparison_multilang': 'Многоязычный',
+            'comparison_free': 'Бесплатный и открытый',
+            'cta_title': 'Готовы начать?',
+            'cta_description': 'Начните безопасно скрывать ваши сообщения с самым продвинутым доступным инструментом стеганографии.',
+            'cta_encode': 'Начать кодирование',
+            'cta_tutorial': 'Посмотреть руководство',
             
             // Раздел кодирования
             'encode_title': 'Скрыть Сообщение в Изображении',
@@ -1347,14 +1595,26 @@ const I18N = {
      */
     changeLanguage: function(langCode) {
         if (this.supportedLanguages[langCode]) {
+            // 检查是否是用户手动切换语言（而不是页面加载时的自动设置）
+            const isManualChange = langCode !== this.currentLanguage;
+            
+            // 保存新的语言选择到本地存储
             this.currentLanguage = langCode;
             localStorage.setItem('preferred_language', langCode);
-            this.applyTranslations();
             
-            // 确保语言选择器的值与当前语言一致
-            const languageSelect = document.getElementById('language-select');
-            if (languageSelect && languageSelect.value !== langCode) {
-                languageSelect.value = langCode;
+            // 如果是手动切换语言，则刷新页面
+            if (isManualChange && document.readyState === 'complete') {
+                // 添加一个标记，防止刷新后再次触发刷新
+                sessionStorage.setItem('language_just_changed', 'true');
+                window.location.reload();
+            } else {
+                // 如果是页面加载时的自动设置，则只应用翻译而不刷新
+                this.applyTranslations();
+                this.updateEncodeTab();
+                this.updateDecodeTab();
+                this.updateCryptoTab();
+                this.updateTutorialTab();
+                this.updateFAQTab();
             }
         }
     },
@@ -1384,12 +1644,16 @@ const I18N = {
         const tabButtons = document.querySelectorAll('.tab-btn');
         tabButtons.forEach(btn => {
             const tabId = btn.getAttribute('data-tab');
-            if (tabId === 'encode') btn.textContent = this.t('tab_encode');
+            if (tabId === 'about') btn.textContent = this.t('tab_about');
+            else if (tabId === 'encode') btn.textContent = this.t('tab_encode');
             else if (tabId === 'decode') btn.textContent = this.t('tab_decode');
             else if (tabId === 'crypto') btn.textContent = this.t('tab_crypto');
             else if (tabId === 'tutorial') btn.textContent = this.t('tab_tutorial');
             else if (tabId === 'faq') btn.textContent = this.t('tab_faq');
         });
+        
+        // 更新About页面
+        this.updateAboutTab();
         
         // 更新编码部分
         this.updateEncodeTab();
@@ -1427,6 +1691,114 @@ const I18N = {
             if (linkElement) {
                 linkElement.textContent = this.t('buymeacoffee_text');
             }
+        }
+    },
+    
+    /**
+     * 更新About页面的翻译
+     */
+    updateAboutTab: function() {
+        // 更新About页面标题
+        const aboutTitle = document.querySelector('#about .about-title');
+        if (aboutTitle) {
+            aboutTitle.textContent = this.t('about_title');
+        }
+        
+        // 更新About页面副标题
+        const aboutSubtitle = document.querySelector('#about .about-subtitle');
+        if (aboutSubtitle) {
+            aboutSubtitle.textContent = this.t('about_subtitle');
+        }
+        
+        // 更新功能特性标题和描述
+        const featureCards = document.querySelectorAll('#about .feature-card');
+        featureCards.forEach((card, index) => {
+            const title = card.querySelector('h3');
+            const desc = card.querySelector('p');
+            
+            switch(index) {
+                case 0: // Maximum Security
+                    if (title) title.textContent = this.t('feature_security_title');
+                    if (desc) desc.textContent = this.t('feature_security_desc');
+                    break;
+                case 1: // Multi-Language Support
+                    if (title) title.textContent = this.t('feature_multilang_title');
+                    if (desc) desc.textContent = this.t('feature_multilang_desc');
+                    break;
+                case 2: // Multiple Algorithms
+                    if (title) title.textContent = this.t('feature_algorithms_title');
+                    if (desc) desc.textContent = this.t('feature_algorithms_desc');
+                    break;
+                case 3: // Password Protection
+                    if (title) title.textContent = this.t('feature_password_title');
+                    if (desc) desc.textContent = this.t('feature_password_desc');
+                    break;
+                case 4: // Crypto Wallet Support
+                    if (title) title.textContent = this.t('feature_crypto_title');
+                    if (desc) desc.textContent = this.t('feature_crypto_desc');
+                    break;
+                case 5: // Easy to Use
+                    if (title) title.textContent = this.t('feature_usability_title');
+                    if (desc) desc.textContent = this.t('feature_usability_desc');
+                    break;
+            }
+        });
+        
+        // 更新对比部分标题
+        const comparisonTitle = document.querySelector('#about .comparison-title');
+        if (comparisonTitle) {
+            comparisonTitle.textContent = this.t('comparison_title');
+        }
+        
+        // 更新对比表格头部
+        const featureHeader = document.querySelector('#about .comparison-feature-header');
+        if (featureHeader) featureHeader.textContent = this.t('comparison_feature_header');
+        
+        const cloakHeader = document.querySelector('#about .comparison-cloak-header');
+        if (cloakHeader) cloakHeader.textContent = this.t('comparison_cloak_header');
+        
+        const othersHeader = document.querySelector('#about .comparison-others-header');
+        if (othersHeader) othersHeader.textContent = this.t('comparison_others_header');
+        
+        // 更新对比表格内容
+        const browserBased = document.querySelector('#about .comparison-browser-based');
+        if (browserBased) browserBased.textContent = this.t('comparison_browser_based');
+        
+        const noUpload = document.querySelector('#about .comparison-no-upload');
+        if (noUpload) noUpload.textContent = this.t('comparison_no_upload');
+        
+        const multiAlgo = document.querySelector('#about .comparison-multi-algo');
+        if (multiAlgo) multiAlgo.textContent = this.t('comparison_multi_algo');
+        
+        const cryptoSupport = document.querySelector('#about .comparison-crypto-support');
+        if (cryptoSupport) cryptoSupport.textContent = this.t('comparison_crypto_support');
+        
+        const multilang = document.querySelector('#about .comparison-multilang');
+        if (multilang) multilang.textContent = this.t('comparison_multilang');
+        
+        const free = document.querySelector('#about .comparison-free');
+        if (free) free.textContent = this.t('comparison_free');
+        
+        // 更新CTA部分
+        const ctaTitle = document.querySelector('#about .cta-title');
+        if (ctaTitle) {
+            ctaTitle.textContent = this.t('cta_title');
+        }
+        
+        const ctaDescription = document.querySelector('#about .cta-description');
+        if (ctaDescription) {
+            ctaDescription.textContent = this.t('cta_description');
+        }
+        
+        // 更新CTA按钮
+        const ctaEncodeBtn = document.querySelector('#about .cta-encode');
+        if (ctaEncodeBtn) {
+            ctaEncodeBtn.textContent = this.t('cta_encode');
+        }
+        
+        const ctaTutorialBtn = document.querySelector('#about .cta-tutorial');
+        if (ctaTutorialBtn) {
+            ctaTutorialBtn.textContent = this.t('cta_tutorial');
         }
     },
     

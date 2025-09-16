@@ -55,7 +55,7 @@ function resetDropArea(dropAreaId) {
         if (messageId) {
             textElement.id = messageId;
         }
-        textElement.textContent = i18n.t('drop_message');
+        textElement.textContent = I18N.t('drop_message');
         dropMessage.appendChild(textElement);
     }
 }
@@ -228,6 +228,42 @@ document.addEventListener('DOMContentLoaded', () => {
     const cryptoDownloadBtn = document.getElementById('crypto-download-btn');
     const cryptoDecodeImageInput = document.getElementById('crypto-decode-image');
     const cryptoDecodePasswordInput = document.getElementById('crypto-decode-password');
+    
+    // 处理加密钱包选择类型的显示隐藏
+    function updateCryptoInputVisibility() {
+        if (!cryptoTypeSelect || !privateKeyInput || !recoveryPhraseInput) {
+            return;
+        }
+        
+        const selectedType = cryptoTypeSelect.value;
+        
+        if (selectedType === 'private-key') {
+            privateKeyInput.classList.remove('hidden');
+            recoveryPhraseInput.classList.add('hidden');
+        } else if (selectedType === 'recovery-phrase') {
+            privateKeyInput.classList.add('hidden');
+            recoveryPhraseInput.classList.remove('hidden');
+        }
+    }
+    
+    // 确保元素存在后再执行
+    if (cryptoTypeSelect && privateKeyInput && recoveryPhraseInput) {
+        // 初始化时设置正确的显示状态
+        updateCryptoInputVisibility();
+        
+        // 监听选择类型变化
+        cryptoTypeSelect.addEventListener('change', function(event) {
+            const selectedType = event.target.value;
+            
+            if (selectedType === 'private-key') {
+                privateKeyInput.classList.remove('hidden');
+                recoveryPhraseInput.classList.add('hidden');
+            } else if (selectedType === 'recovery-phrase') {
+                privateKeyInput.classList.add('hidden');
+                recoveryPhraseInput.classList.remove('hidden');
+            }
+        });
+    }
     const toggleCryptoDecodePasswordBtn = document.getElementById('toggle-crypto-decode-password');
     const cryptoDecodeBtn = document.getElementById('crypto-decode-btn');
     const cryptoDecodeResult = document.getElementById('crypto-decode-result');
@@ -481,33 +517,60 @@ function setupWordValidation(input) {
     setupDropArea('crypto-decode-drop-area', 'crypto-decode-image');
     
     // Tab switching functionality
+    function switchToTab(tabId) {
+        // Remove active state from all tabs
+        tabBtns.forEach(b => b.classList.remove('active'));
+        tabPanes.forEach(p => p.classList.remove('active'));
+        
+        // Add active state to current tab
+        const targetBtn = document.querySelector(`[data-tab="${tabId}"]`);
+        if (targetBtn) {
+            targetBtn.classList.add('active');
+        }
+        const targetPane = document.getElementById(tabId);
+        if (targetPane) {
+            targetPane.classList.add('active');
+        }
+        
+        // Reset result areas
+        if (encodeResult) encodeResult.classList.add('hidden');
+        if (decodeResult) decodeResult.classList.add('hidden');
+        if (cryptoEncodeResult) cryptoEncodeResult.classList.add('hidden');
+        if (cryptoDecodeResult) cryptoDecodeResult.classList.add('hidden');
+        
+        // 重置所有拖放区域
+        resetDropArea('encode-drop-area');
+        resetDropArea('decode-drop-area');
+        resetDropArea('crypto-encode-drop-area');
+        resetDropArea('crypto-decode-drop-area');
+    }
+    
     tabBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-            // Remove active state from all tabs
-            tabBtns.forEach(b => b.classList.remove('active'));
-            tabPanes.forEach(p => p.classList.remove('active'));
-            
-            // Add active state to current tab
-            btn.classList.add('active');
             const tabId = btn.getAttribute('data-tab');
-            document.getElementById(tabId).classList.add('active');
-            
-            // Reset result areas
-            encodeResult.classList.add('hidden');
-            decodeResult.classList.add('hidden');
-            cryptoEncodeResult.classList.add('hidden');
-            cryptoDecodeResult.classList.add('hidden');
-            
-            // 重置所有拖放区域
-            resetDropArea('encode-drop-area');
-            resetDropArea('decode-drop-area');
-            resetDropArea('crypto-encode-drop-area');
-            resetDropArea('crypto-decode-drop-area');
+            switchToTab(tabId);
         });
     });
+    
+    // About page CTA buttons
+    const ctaEncodeBtn = document.getElementById('cta-encode');
+    const ctaTutorialBtn = document.getElementById('cta-tutorial');
+    
+    if (ctaEncodeBtn) {
+        ctaEncodeBtn.addEventListener('click', () => {
+            switchToTab('encode');
+        });
+    }
+    
+    if (ctaTutorialBtn) {
+        ctaTutorialBtn.addEventListener('click', () => {
+            switchToTab('tutorial');
+        });
+    }
 
     // Crypto wallet type switching
-    cryptoTypeSelect.addEventListener('change', () => {
+    // 初始化函数：根据选择的类型显示对应的输入框
+    function updateCryptoInputVisibility() {
         if (cryptoTypeSelect.value === 'private-key') {
             privateKeyInput.classList.remove('hidden');
             recoveryPhraseInput.classList.add('hidden');
@@ -515,7 +578,13 @@ function setupWordValidation(input) {
             privateKeyInput.classList.add('hidden');
             recoveryPhraseInput.classList.remove('hidden');
         }
-    });
+    }
+    
+    // 页面加载时执行初始化
+    updateCryptoInputVisibility();
+    
+    // 当选择变化时更新显示
+    cryptoTypeSelect.addEventListener('change', updateCryptoInputVisibility);
     
     // Phrase length switching
     phraseLengthSelect.addEventListener('change', () => {
@@ -528,10 +597,10 @@ function setupWordValidation(input) {
         toggleButton.addEventListener('click', () => {
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
-                toggleButton.textContent = 'Hide';
+                toggleButton.textContent = I18N.t('hide_password');
             } else {
                 passwordInput.type = 'password';
-                toggleButton.textContent = 'Show';
+                toggleButton.textContent = I18N.t('show_password');
             }
         });
     }
@@ -551,7 +620,8 @@ function setupWordValidation(input) {
             input.type = isVisible ? 'password' : 'text';
         });
         
-        togglePhraseBtn.textContent = isVisible ? 'Show' : 'Hide';
+        // 使用国际化系统获取正确的文本
+        togglePhraseBtn.textContent = isVisible ? I18N.t('show_password') : I18N.t('hide_password');
     });
     
     // 自动清除功能
