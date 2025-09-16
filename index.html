@@ -3,22 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>cloak: a better image steganography tool</title>
-    <meta name="description" content="Free online steganography tool to hide secret messages in images. Secure, browser-based with no data uploads, supporting multiple algorithms and password protection.">
-    <meta name="keywords" content="steganography, image steganography, hide message in image, secret message, data hiding, LSB, DCT, patchwork, online tool, free steganography">
-    <meta name="author" content="cloak">
-    <meta name="robots" content="index, follow">
-    <meta property="og:title" content="cloak: a better image steganography tool">
-    <meta property="og:description" content="Free online steganography tool to hide secret messages in images. Secure, browser-based with no data uploads.">
+    <title>Cloak - 最安全的在线图片隐写术工具 | 免费隐藏文字消息</title>
+    <meta name="description" content="Cloak是最安全的在线图片隐写术工具，支持在图片中隐藏文字消息。浏览器端处理，无数据上传，支持LSB、DCT、Patchwork算法，密码保护，加密钱包支持。完全免费使用。">
+    <meta name="keywords" content="隐写术,图片隐写,隐藏消息,秘密消息,数据隐藏,LSB算法,DCT算法,Patchwork算法,在线工具,免费隐写术,steganography,image steganography,hide message,secret message,data hiding,online tool,free steganography,crypto wallet,password protection">
+    <meta name="author" content="Cloak Team">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta property="og:title" content="Cloak - 最安全的在线图片隐写术工具">
+    <meta property="og:description" content="免费在线隐写术工具，在图片中安全隐藏文字消息。浏览器端处理，支持多种算法，密码保护，完全免费。">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://yourdomain.com/">
-    <meta property="og:image" content="https://yourdomain.com/og-image.jpg">
+    <meta property="og:url" content="http://cloak.y2hhbw.cyou/">
+    <meta property="og:image" content="http://cloak.y2hhbw.cyou/icon-512x512.svg">
+    <meta property="og:site_name" content="Cloak">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:locale:alternate" content="en_US">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="cloak: a better image steganography tool">
-    <meta name="twitter:description" content="Free online steganography tool to hide secret messages in images. Secure, browser-based with no data uploads.">
-    <link rel="canonical" href="https://yourdomain.com/">
+    <meta name="twitter:title" content="Cloak - 最安全的在线图片隐写术工具">
+    <meta name="twitter:description" content="免费在线隐写术工具，在图片中安全隐藏文字消息。浏览器端处理，支持多种算法，密码保护。">
+    <meta name="twitter:image" content="http://cloak.y2hhbw.cyou/icon-512x512.svg">
+    <link rel="canonical" href="http://cloak.y2hhbw.cyou/">
+    
+    <!-- 性能优化 -->
+    <link rel="preload" href="style.css" as="style">
+    <link rel="preload" href="app.js" as="script">
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    
+    <!-- PWA支持 -->
     <link rel="manifest" href="manifest.json">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Cloak">
+    
+    <!-- 安全性 -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net/; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:;">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
     <link rel="apple-touch-icon" href="icon-192x192.svg">
     <meta name="theme-color" content="#4285f4">
     <link rel="stylesheet" href="style.css">
@@ -28,26 +48,49 @@
     {
       "@context": "https://schema.org",
       "@type": "WebApplication",
-      "name": "cloak: a better image steganography tool",
-      "url": "https://yourdomain.com/",
-      "description": "Free online steganography tool to hide secret messages in images. Secure, browser-based with no data uploads.",
+      "name": "Cloak - 在线图片隐写术工具",
+      "alternateName": "Cloak Steganography Tool",
+      "url": "http://cloak.y2hhbw.cyou/",
+      "description": "最安全的在线图片隐写术工具，支持在图片中隐藏文字消息。浏览器端处理，无数据上传，支持多种算法和密码保护。",
       "applicationCategory": "SecurityApplication",
       "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
       "offers": {
         "@type": "Offer",
         "price": "0",
-        "priceCurrency": "USD"
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
       },
-      "featureList": "LSB steganography, DCT steganography, Patchwork steganography, Password protection, Crypto wallet integration"
+      "featureList": [
+        "LSB隐写算法",
+        "DCT隐写算法", 
+        "Patchwork隐写算法",
+        "密码保护",
+        "加密钱包集成",
+        "多语言支持",
+        "浏览器端处理",
+        "无数据上传"
+      ],
+      "screenshot": "http://cloak.y2hhbw.cyou/icon-512x512.svg",
+      "softwareVersion": "2.0",
+      "datePublished": "2023-11-01",
+      "dateModified": "2024-01-15",
+      "author": {
+        "@type": "Organization",
+        "name": "Cloak Team"
+      },
+      "inLanguage": ["zh-CN", "en-US", "ja-JP", "fr-FR", "es-ES", "de-DE", "ru-RU", "ko-KR"],
+      "keywords": "隐写术,图片隐写,隐藏消息,steganography,image steganography,hide message"
     }
     </script>
 </head>
 <body>
     <div class="container">
-        <div class="header-container">
-            <h1 id="app-title">cloak: a better image steganography tool</h1>
-            <div class="language-selector">
-                <select id="language-select">
+        <header class="header-container" role="banner">
+            <h1 id="app-title">Cloak - 最安全的在线图片隐写术工具</h1>
+            <nav class="language-selector" role="navigation" aria-label="语言选择">
+                <label for="language-select" class="sr-only">选择语言</label>
+                <select id="language-select" aria-label="选择界面语言">
                     <option value="en">🇺🇸 English</option>
                     <option value="zh">🇨🇳 简体中文</option>
                     <option value="zh-tw">🇭🇰 繁體中文</option>
@@ -57,63 +100,63 @@
                     <option value="de">🇩🇪 Deutsch</option>
                     <option value="ru">🇷🇺 Русский</option>
                 </select>
-            </div>
-        </div>
-        <p id="app-description" class="description">Hide text messages in images or extract hidden text from images. All operations are performed in your browser, no data is uploaded.</p>
+            </nav>
+        </header>
+        <p id="app-description" class="description">在图片中隐藏文字消息或从图片中提取隐藏文字。所有操作都在您的浏览器中执行，无数据上传。</p>
         
-        <div class="tabs">
-            <button id="tab-about" class="tab-btn active" data-tab="about">Why Better</button>
-            <button id="tab-encode" class="tab-btn" data-tab="encode">Encode Message</button>
-            <button id="tab-decode" class="tab-btn" data-tab="decode">Decode Message</button>
-            <button id="tab-crypto" class="tab-btn" data-tab="crypto">Crypto Wallet</button>
-            <button id="tab-tutorial" class="tab-btn" data-tab="tutorial">Tutorial</button>
-            <button id="tab-faq" class="tab-btn" data-tab="faq">FAQ</button>
-        </div>
+        <nav class="tabs" role="tablist" aria-label="主要功能导航">
+            <button id="tab-about" class="tab-btn active" data-tab="about" role="tab" aria-selected="true" aria-controls="about">为什么更好</button>
+            <button id="tab-encode" class="tab-btn" data-tab="encode" role="tab" aria-selected="false" aria-controls="encode">编码消息</button>
+            <button id="tab-decode" class="tab-btn" data-tab="decode" role="tab" aria-selected="false" aria-controls="decode">解码消息</button>
+            <button id="tab-crypto" class="tab-btn" data-tab="crypto" role="tab" aria-selected="false" aria-controls="crypto">加密钱包</button>
+            <button id="tab-tutorial" class="tab-btn" data-tab="tutorial" role="tab" aria-selected="false" aria-controls="tutorial">教程</button>
+            <button id="tab-faq" class="tab-btn" data-tab="faq" role="tab" aria-selected="false" aria-controls="faq">常见问题</button>
+        </nav>
         
-        <div class="tab-content">
-            <div id="about" class="tab-pane active">
-                <div class="about-hero">
-                    <h1 class="about-title">Why cloak is a Better Image Steganography Tool</h1>
-                    <p class="about-subtitle">The most secure, feature-rich, and user-friendly steganography tool available online</p>
-                </div>
+        <main id="main-content" class="tab-content" role="main">
+            <section id="about" class="tab-pane active" role="tabpanel" aria-labelledby="tab-about">
+                <header class="about-hero">
+                    <h2 class="about-title">为什么Cloak是更好的图片隐写术工具</h2>
+                    <p class="about-subtitle">最安全、功能最丰富、最用户友好的在线隐写术工具</p>
+                </header>
 
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <div class="feature-icon">🔒</div>
-                        <h3 id="feature-security-title">Maximum Security</h3>
-                        <p id="feature-security-desc">All operations happen in your browser. No data is ever uploaded to any server, ensuring complete privacy and security.</p>
-                    </div>
+                <section class="features-grid" aria-label="主要功能特性">
+                    <article class="feature-card">
+                        <div class="feature-icon" aria-hidden="true">🔒</div>
+                        <h3 id="feature-security-title">最高安全性</h3>
+                        <p id="feature-security-desc">所有操作都在您的浏览器中进行。没有数据上传到任何服务器，确保完全的隐私和安全。</p>
+                    </article>
 
-                    <div class="feature-card">
-                        <div class="feature-icon">🌍</div>
-                        <h3 id="feature-multilang-title">Multi-Language Support</h3>
-                        <p id="feature-multilang-desc">Available in 8 languages including English, Chinese, French, Japanese, Spanish, German, and Russian.</p>
-                    </div>
+                    <article class="feature-card">
+                        <div class="feature-icon" aria-hidden="true">🌍</div>
+                        <h3 id="feature-multilang-title">多语言支持</h3>
+                        <p id="feature-multilang-desc">支持8种语言，包括英语、中文、法语、日语、西班牙语、德语和俄语。</p>
+                    </article>
 
-                    <div class="feature-card">
-                        <div class="feature-icon">⚙️</div>
-                        <h3 id="feature-algorithms-title">Multiple Algorithms</h3>
-                        <p id="feature-algorithms-desc">Supports LSB, DCT, and Patchwork steganography algorithms with auto-detection for maximum compatibility.</p>
-                    </div>
+                    <article class="feature-card">
+                        <div class="feature-icon" aria-hidden="true">⚙️</div>
+                        <h3 id="feature-algorithms-title">多种算法</h3>
+                        <p id="feature-algorithms-desc">支持LSB、DCT和Patchwork隐写算法，具有自动检测功能，最大兼容性。</p>
+                    </article>
 
-                    <div class="feature-card">
-                        <div class="feature-icon">🔐</div>
-                        <h3 id="feature-password-title">Password Protection</h3>
-                        <p id="feature-password-desc">Optional password encryption adds an extra layer of security to your hidden messages.</p>
-                    </div>
+                    <article class="feature-card">
+                        <div class="feature-icon" aria-hidden="true">🔐</div>
+                        <h3 id="feature-password-title">密码保护</h3>
+                        <p id="feature-password-desc">可选的密码加密为您的隐藏消息添加额外的安全层。</p>
+                    </article>
 
-                    <div class="feature-card">
-                        <div class="feature-icon">💰</div>
-                        <h3 id="feature-crypto-title">Crypto Wallet Support</h3>
-                        <p id="feature-crypto-desc">Specialized features for securely hiding cryptocurrency private keys and recovery phrases.</p>
-                    </div>
+                    <article class="feature-card">
+                        <div class="feature-icon" aria-hidden="true">💰</div>
+                        <h3 id="feature-crypto-title">加密钱包支持</h3>
+                        <p id="feature-crypto-desc">专门功能用于安全隐藏加密货币私钥和恢复短语。</p>
+                    </article>
 
-                    <div class="feature-card">
-                        <div class="feature-icon">🎯</div>
-                        <h3 id="feature-usability-title">Easy to Use</h3>
-                        <p id="feature-usability-desc">Intuitive interface with drag-and-drop support, real-time validation, and comprehensive tutorials.</p>
-                    </div>
-                </div>
+                    <article class="feature-card">
+                        <div class="feature-icon" aria-hidden="true">🎯</div>
+                        <h3 id="feature-usability-title">易于使用</h3>
+                        <p id="feature-usability-desc">直观界面，支持拖放、实时验证和全面教程。</p>
+                    </article>
+                </section>
 
                 <div class="comparison-section">
                     <h3 class="comparison-title">Why Choose cloak Over Other Tools?</h3>
@@ -157,18 +200,20 @@
                 </div>
 
                 <div class="cta-section">
-                    <h3 class="cta-title">Ready to Get Started?</h3>
-                    <p class="cta-description">Start hiding your messages securely with the most advanced steganography tool available.</p>
+                    <h3 class="cta-title">准备开始使用了吗？</h3>
+                    <p class="cta-description">使用最先进的隐写术工具开始安全地隐藏您的消息。</p>
                     <div class="cta-buttons">
-                        <button id="cta-encode" class="btn primary-btn cta-encode" data-tab="encode">Start Encoding</button>
-                        <button id="cta-tutorial" class="btn secondary-btn cta-tutorial" data-tab="tutorial">View Tutorial</button>
+                        <button id="cta-encode" class="btn primary-btn cta-encode" data-tab="encode" aria-label="开始编码消息">开始编码</button>
+                        <button id="cta-tutorial" class="btn secondary-btn cta-tutorial" data-tab="tutorial" aria-label="查看使用教程">查看教程</button>
                     </div>
+
                 </div>
             </div>
             
             <div id="encode" class="tab-pane">
-                <h2 id="encode-title">Hide Message in Image</h2>
-                <p id="encode-description">Select an image, enter the text you want to hide, then click the "Encode" button. Save the generated image, it will contain your hidden message.</p>
+                <div class="tab-content-wrapper">
+                    <h2 id="encode-title">Hide Secret Message</h2>
+                <p id="encode-description">Select an image and enter your secret message. The message will be hidden within the image using steganography techniques.</p>
                 <div class="form-group">
                     <label id="label-encode-image" for="encode-image">Select Image:</label>
                     <input type="file" id="encode-image" accept="image/*" style="display:none;">
@@ -210,14 +255,19 @@
                 <div id="encode-result" class="result-container hidden">
                     <h3 id="encoding-result-title">Encoding Result</h3>
                     <div class="image-container">
-                        <img id="encoded-image" src="" alt="Encoded image">
+                        <img id="encoded-image" src="" alt="使用隐写术编码后的图片 - 包含隐藏文字消息的图像文件" loading="lazy">
                     </div>
                     <button id="download-btn" class="action-btn">Download Image</button>
+                </div>
+                </div>
+            </div>
+                    </div>
                 </div>
             </div>
             
             <div id="decode" class="tab-pane">
-                <h2 id="decode-title">Extract Hidden Message</h2>
+                <div class="tab-content-wrapper">
+                    <h2 id="decode-title">Extract Hidden Message</h2>
                 <p id="decode-description">Select an image containing a hidden message, then click the "Decode" button to extract the hidden text.</p>
                 <div class="form-group">
                     <label id="label-decode-image" for="decode-image">Select Image:</label>
@@ -261,10 +311,12 @@
                         <button id="download-qr-btn" class="action-btn">Download QR Code</button>
                     </div>
                 </div>
+                </div>
             </div>
             
             <div id="crypto" class="tab-pane">
-                <h2 id="crypto-title">Crypto Wallet Protection</h2>
+                <div class="tab-content-wrapper">
+                    <h2 id="crypto-title">Crypto Wallet Protection</h2>
                 <p id="crypto-description">Securely hide your cryptocurrency wallet private keys or recovery phrases in an image. Never share these images on public platforms.</p>
                 
                 <div class="form-group">
@@ -345,7 +397,7 @@
                 <div id="crypto-encode-result" class="result-container hidden">
                     <h3>Encoding Result</h3>
                     <div class="image-container">
-                        <img id="crypto-encoded-image" src="" alt="Encoded image with wallet info">
+                        <img id="crypto-encoded-image" src="" alt="包含加密钱包信息的隐写术图片 - 安全隐藏私钥和助记词的图像" loading="lazy">
                     </div>
                     <button id="crypto-download-btn" class="action-btn">Download Image</button>
                 </div>
@@ -400,10 +452,12 @@
                         <button id="crypto-download-qr-btn" class="action-btn">Download QR Code</button>
                     </div>
                 </div>
+                </div>
             </div>
             
             <div id="tutorial" class="tab-pane">
-                <h2 id="tutorial-title">Tutorial & Usage Guidelines</h2>
+                <div class="tab-content-wrapper">
+                    <h2 id="tutorial-title">Tutorial & Usage Guidelines</h2>
                 <div class="tutorial-content">
                     <h3 id="what-is-steg">What is Steganography?</h3>
                     <p id="steg-definition">Steganography is the practice of hiding information within other non-secret data or a physical object to avoid detection. This tool allows you to hide text messages inside images.</p>
@@ -458,12 +512,15 @@
                         <!-- 安全最佳实践内容将由i18n.js动态生成 -->
                     </div>
                 </div>
+                </div>
             </div>
             
             <div id="faq" class="tab-pane">
-                <h2 id="faq-title">Frequently Asked Questions</h2>
-                <div class="faq-content">
-                    <!-- FAQ内容将由i18n.js动态生成 -->
+                <div class="tab-content-wrapper">
+                    <h2 id="faq-title">Frequently Asked Questions</h2>
+                    <div class="faq-content">
+                        <!-- FAQ内容将由i18n.js动态生成 -->
+                    </div>
                 </div>
             </div>
         </div>
