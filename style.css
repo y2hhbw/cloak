@@ -196,7 +196,7 @@ h3 {
 }
 
 .tab-content {
-    margin-top: 1rem;
+    margin-top: 0;
 }
 
 .tab-pane {
@@ -204,6 +204,8 @@ h3 {
     padding: 2rem;
     background: #ffffff;
     min-height: 500px;
+    max-width: 1000px;
+    margin: 0 auto;
 }
 
 
@@ -214,7 +216,7 @@ h3 {
 
 /* 标签页内容包装器 */
 .tab-content-wrapper {
-    max-width: 1200px;
+    max-width: 1000px;
     margin: 0 auto;
     padding: 0 2rem;
 }
@@ -929,10 +931,7 @@ hr {
     color: white;
     border-radius: 8px;
     margin-top: -1rem;
-    margin-left: -2rem;
-    margin-right: -2rem;
-    padding-left: 2rem;
-    padding-right: 2rem;
+    padding: 2rem;
 }
 
 .about-hero h2 {
@@ -1207,8 +1206,6 @@ hr {
     background: #f8f9fa;
     padding: 3rem 2rem;
     border-radius: 8px;
-    margin-left: -2rem;
-    margin-right: -2rem;
 }
 
 /* 内部链接样式 */
