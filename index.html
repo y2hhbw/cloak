@@ -115,10 +115,11 @@
         
         <main id="main-content" class="tab-content" role="main">
             <section id="about" class="tab-pane active" role="tabpanel" aria-labelledby="tab-about">
-                <header class="about-hero">
-                    <h2 class="about-title">为什么Cloak是更好的图片隐写术工具</h2>
-                    <p class="about-subtitle">最安全、功能最丰富、最用户友好的在线隐写术工具</p>
-                </header>
+                <div class="tab-content-wrapper">
+                    <header class="about-hero">
+                        <h2 class="about-title">为什么Cloak是更好的图片隐写术工具</h2>
+                        <p class="about-subtitle">最安全、功能最丰富、最用户友好的在线隐写术工具</p>
+                    </header>
 
                 <section class="features-grid" aria-label="主要功能特性">
                     <article class="feature-card">
@@ -209,54 +210,57 @@
 
                 </div>
             </div>
+        </div>
             
             <div id="encode" class="tab-pane">
-                <h2 id="encode-title">Hide Secret Message</h2>
-                <p id="encode-description">Select an image and enter your secret message. The message will be hidden within the image using steganography techniques.</p>
-                <div class="form-group">
-                    <label id="label-encode-image" for="encode-image">Select Image:</label>
-                    <input type="file" id="encode-image" accept="image/*" style="display:none;">
-                    <div class="drop-area" id="encode-drop-area">
-                        <div class="drop-message">
-                            <i class="fas fa-cloud-upload-alt"></i>
-                            <p id="drop-message-text">Drop image here or click to select file</p>
+                <div class="tab-content-wrapper">
+                    <h2 id="encode-title">Hide Secret Message</h2>
+                    <p id="encode-description">Select an image and enter your secret message. The message will be hidden within the image using steganography techniques.</p>
+                    <div class="form-group">
+                        <label id="label-encode-image" for="encode-image">Select Image:</label>
+                        <input type="file" id="encode-image" accept="image/*" style="display:none;">
+                        <div class="drop-area" id="encode-drop-area">
+                            <div class="drop-message">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p id="drop-message-text">Drop image here or click to select file</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label id="label-secret-message" for="secret-message">Secret Message:</label>
-                    <textarea id="secret-message" placeholder="Enter text to hide..."></textarea>
-                </div>
-                <div class="form-group">
-                    <label id="label-encode-password" for="encode-password">Password Protection (Optional):</label>
-                    <div class="password-container">
-                        <input type="password" id="encode-password" placeholder="Enter password to encrypt your message...">
-                        <button id="toggle-encode-password" class="small-btn">Show</button>
+                    <div class="form-group">
+                        <label id="label-secret-message" for="secret-message">Secret Message:</label>
+                        <textarea id="secret-message" placeholder="Enter text to hide..."></textarea>
                     </div>
-                    <p id="encode-password-help" class="help-text">Adding a password will encrypt your message for additional security.</p>
-                </div>
-                <div class="form-group">
-                    <label id="label-encode-algorithm" for="encode-algorithm">Steganography Algorithm:</label>
-                    <select id="encode-algorithm">
-                        <option value="lsb">LSB (Least Significant Bit)</option>
-                        <option value="dct">DCT (Discrete Cosine Transform)</option>
-                        <option value="patchwork">Patchwork</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label id="label-auto-clear" class="checkbox-container">
-                        <input type="checkbox" id="auto-clear-encode">
-                        <span class="checkmark"></span>
-                        <span id="auto-clear-text">Auto-clear sensitive data after encoding</span>
-                    </label>
-                </div>
-                <button id="encode-btn" class="action-btn">Encode</button>
-                <div id="encode-result" class="result-container hidden">
-                    <h3 id="encoding-result-title">Encoding Result</h3>
-                    <div class="image-container">
-                        <img id="encoded-image" src="" alt="使用隐写术编码后的图片 - 包含隐藏文字消息的图像文件" loading="lazy">
+                    <div class="form-group">
+                        <label id="label-encode-password" for="encode-password">Password Protection (Optional):</label>
+                        <div class="password-container">
+                            <input type="password" id="encode-password" placeholder="Enter password to encrypt your message...">
+                            <button id="toggle-encode-password" class="small-btn">Show</button>
+                        </div>
+                        <p id="encode-password-help" class="help-text">Adding a password will encrypt your message for additional security.</p>
                     </div>
-                    <button id="download-btn" class="action-btn">Download Image</button>
+                    <div class="form-group">
+                        <label id="label-encode-algorithm" for="encode-algorithm">Steganography Algorithm:</label>
+                        <select id="encode-algorithm">
+                            <option value="lsb">LSB (Least Significant Bit)</option>
+                            <option value="dct">DCT (Discrete Cosine Transform)</option>
+                            <option value="patchwork">Patchwork</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label id="label-auto-clear" class="checkbox-container">
+                            <input type="checkbox" id="auto-clear-encode">
+                            <span class="checkmark"></span>
+                            <span id="auto-clear-text">Auto-clear sensitive data after encoding</span>
+                        </label>
+                    </div>
+                    <button id="encode-btn" class="action-btn">Encode</button>
+                    <div id="encode-result" class="result-container hidden">
+                        <h3 id="encoding-result-title">Encoding Result</h3>
+                        <div class="image-container">
+                            <img id="encoded-image" src="" alt="使用隐写术编码后的图片 - 包含隐藏文字消息的图像文件" loading="lazy">
+                        </div>
+                        <button id="download-btn" class="action-btn">Download Image</button>
+                    </div>
                 </div>
             </div>
                     </div>
@@ -264,253 +268,261 @@
             </div>
             
             <div id="decode" class="tab-pane">
-                <h2 id="decode-title">Extract Hidden Message</h2>
-                <p id="decode-description">Select an image containing a hidden message, then click the "Decode" button to extract the hidden text.</p>
-                <div class="form-group">
-                    <label id="label-decode-image" for="decode-image">Select Image:</label>
-                    <input type="file" id="decode-image" accept="image/*" style="display:none;">
-                    <div class="drop-area" id="decode-drop-area">
-                        <div class="drop-message">
-                            <i class="fas fa-cloud-upload-alt"></i>
-                            <p id="decode-drop-message">Drop image here or click to select file</p>
+                <div class="tab-content-wrapper">
+                    <h2 id="decode-title">Extract Hidden Message</h2>
+                    <p id="decode-description">Select an image containing a hidden message, then click the "Decode" button to extract the hidden text.</p>
+                    <div class="form-group">
+                        <label id="label-decode-image" for="decode-image">Select Image:</label>
+                        <input type="file" id="decode-image" accept="image/*" style="display:none;">
+                        <div class="drop-area" id="decode-drop-area">
+                            <div class="drop-message">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p id="decode-drop-message">Drop image here or click to select file</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label id="label-decode-password" for="decode-password">Password (if required):</label>
-                    <div class="password-container">
-                        <input type="password" id="decode-password" placeholder="Enter password if the message is encrypted...">
-                        <button id="toggle-decode-password" class="small-btn">Show</button>
+                    <div class="form-group">
+                        <label id="label-decode-password" for="decode-password">Password (if required):</label>
+                        <div class="password-container">
+                            <input type="password" id="decode-password" placeholder="Enter password if the message is encrypted...">
+                            <button id="toggle-decode-password" class="small-btn">Show</button>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label id="label-decode-algorithm" for="decode-algorithm">Steganography Algorithm:</label>
-                    <select id="decode-algorithm">
-                        <option value="lsb">LSB (Least Significant Bit)</option>
-                        <option value="dct">DCT (Discrete Cosine Transform)</option>
-                        <option value="patchwork">Patchwork</option>
-                        <option value="auto">Auto Detect</option>
-                    </select>
-                </div>
-                <button id="decode-btn" class="action-btn">Decode</button>
-                <button id="check-watermark-btn" class="secondary-btn">Check for Hidden Content</button>
-                <div id="decode-result" class="result-container hidden">
-                    <h3 id="decoding-result-title">Decoding Result</h3>
-                    <div class="message-container">
-                        <textarea id="decoded-message" readonly></textarea>
+                    <div class="form-group">
+                        <label id="label-decode-algorithm" for="decode-algorithm">Steganography Algorithm:</label>
+                        <select id="decode-algorithm">
+                            <option value="lsb">LSB (Least Significant Bit)</option>
+                            <option value="dct">DCT (Discrete Cosine Transform)</option>
+                            <option value="patchwork">Patchwork</option>
+                            <option value="auto">Auto Detect</option>
+                        </select>
                     </div>
-                    <div class="button-group">
-                        <button id="copy-btn" class="action-btn">Copy Text</button>
-                        <button id="generate-qr-btn" class="action-btn">Generate QR Code</button>
-                    </div>
-                    <div id="qrcode-container" class="qrcode-container hidden">
-                        <canvas id="qrcode-canvas"></canvas>
-                        <button id="download-qr-btn" class="action-btn">Download QR Code</button>
+                    <button id="decode-btn" class="action-btn">Decode</button>
+                    <button id="check-watermark-btn" class="secondary-btn">Check for Hidden Content</button>
+                    <div id="decode-result" class="result-container hidden">
+                        <h3 id="decoding-result-title">Decoding Result</h3>
+                        <div class="message-container">
+                            <textarea id="decoded-message" readonly></textarea>
+                        </div>
+                        <div class="button-group">
+                            <button id="copy-btn" class="action-btn">Copy Text</button>
+                            <button id="generate-qr-btn" class="action-btn">Generate QR Code</button>
+                        </div>
+                        <div id="qrcode-container" class="qrcode-container hidden">
+                            <canvas id="qrcode-canvas"></canvas>
+                            <button id="download-qr-btn" class="action-btn">Download QR Code</button>
+                        </div>
                     </div>
                 </div>
             </div>
             
             <div id="crypto" class="tab-pane">
-                <h2 id="crypto-title">Crypto Wallet Protection</h2>
-                <p id="crypto-description">Securely hide your cryptocurrency wallet private keys or recovery phrases in an image. Never share these images on public platforms.</p>
-                
-                <div class="form-group">
-                    <label for="crypto-type">Select Type:</label>
-                    <select id="crypto-type">
-                        <option value="private-key">Private Key</option>
-                        <option value="recovery-phrase">Recovery Phrase (12/24 words)</option>
-                    </select>
-                </div>
-                
-                <div id="private-key-input" class="form-group">
-                    <label for="private-key" id="label-private-key">Private Key:</label>
-                    <div class="password-container">
-                        <input type="password" id="private-key" placeholder="Enter your private key...">
-                        <button id="toggle-key-visibility" class="small-btn">Show</button>
-                    </div>
-                </div>
-                
-                <div id="recovery-phrase-input" class="form-group hidden">
-                    <label for="recovery-phrase">Recovery Phrase:</label>
-                    <div id="phrase-grid" class="phrase-grid">
-                        <!-- 12 word inputs will be generated by JavaScript -->
-                    </div>
+                <div class="tab-content-wrapper">
+                    <h2 id="crypto-title">Crypto Wallet Protection</h2>
+                    <p id="crypto-description">Securely hide your cryptocurrency wallet private keys or recovery phrases in an image. Never share these images on public platforms.</p>
+                    
                     <div class="form-group">
-                        <label for="phrase-length">Phrase Length:</label>
-                        <select id="phrase-length">
-                            <option value="12">12 words</option>
-                            <option value="24">24 words</option>
+                        <label for="crypto-type">Select Type:</label>
+                        <select id="crypto-type">
+                            <option value="private-key">Private Key</option>
+                            <option value="recovery-phrase">Recovery Phrase (12/24 words)</option>
                         </select>
                     </div>
-                    <button id="toggle-phrase-visibility" class="small-btn">Show</button>
-                    <button id="validate-phrase-btn" class="secondary-btn">Validate Phrase</button>
-                    <div id="phrase-validation-message" class="phrase-validation-message hidden"></div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="crypto-password">Password Protection (Optional):</label>
-                    <div class="password-container">
-                        <input type="password" id="crypto-password" placeholder="Enter password to encrypt your wallet info...">
-                        <button id="toggle-crypto-password" class="small-btn">Show</button>
-                    </div>
-                    <p class="help-text">Adding a password will encrypt your wallet information for additional security.</p>
-                </div>
-                
-                <div class="form-group">
-                    <label for="crypto-algorithm">Steganography Algorithm:</label>
-                    <select id="crypto-algorithm">
-                        <option value="lsb">LSB (Least Significant Bit)</option>
-                        <option value="dct">DCT (Discrete Cosine Transform)</option>
-                        <option value="patchwork">Patchwork</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="crypto-image">Select Image:</label>
-                    <input type="file" id="crypto-image" accept="image/*" style="display:none;">
-                    <div class="drop-area" id="crypto-encode-drop-area">
-                        <div class="drop-message">
-                            <i class="fas fa-cloud-upload-alt"></i>
-                            <p>Drop image here or click to select file</p>
+                    
+                    <div id="private-key-input" class="form-group">
+                        <label for="private-key" id="label-private-key">Private Key:</label>
+                        <div class="password-container">
+                            <input type="password" id="private-key" placeholder="Enter your private key...">
+                            <button id="toggle-key-visibility" class="small-btn">Show</button>
                         </div>
                     </div>
-                    <div id="watermark-warning" class="warning-message hidden">
-                        Warning: This image already contains hidden data. Encoding new data will overwrite it.
+                    
+                    <div id="recovery-phrase-input" class="form-group hidden">
+                        <label for="recovery-phrase">Recovery Phrase:</label>
+                        <div id="phrase-grid" class="phrase-grid">
+                            <!-- 12 word inputs will be generated by JavaScript -->
+                        </div>
+                        <div class="form-group">
+                            <label for="phrase-length">Phrase Length:</label>
+                            <select id="phrase-length">
+                                <option value="12">12 words</option>
+                                <option value="24">24 words</option>
+                            </select>
+                        </div>
+                        <button id="toggle-phrase-visibility" class="small-btn">Show</button>
+                        <button id="validate-phrase-btn" class="secondary-btn">Validate Phrase</button>
+                        <div id="phrase-validation-message" class="phrase-validation-message hidden"></div>
                     </div>
-                </div>
-                
-                <div class="form-group">
-                    <label class="checkbox-container">
-                        <input type="checkbox" id="auto-clear-crypto">
-                        <span class="checkmark"></span>
-                        <span id="auto-clear-crypto-text">Auto-clear sensitive data after encoding</span>
-                    </label>
-                </div>
-                
-                <button id="crypto-encode-btn" class="action-btn">Encode Wallet Info</button>
-                
-                <div id="crypto-encode-result" class="result-container hidden">
-                    <h3>Encoding Result</h3>
-                    <div class="image-container">
-                        <img id="crypto-encoded-image" src="" alt="包含加密钱包信息的隐写术图片 - 安全隐藏私钥和助记词的图像" loading="lazy">
+                    
+                    <div class="form-group">
+                        <label for="crypto-password">Password Protection (Optional):</label>
+                        <div class="password-container">
+                            <input type="password" id="crypto-password" placeholder="Enter password to encrypt your wallet info...">
+                            <button id="toggle-crypto-password" class="small-btn">Show</button>
+                        </div>
+                        <p class="help-text">Adding a password will encrypt your wallet information for additional security.</p>
                     </div>
-                    <button id="crypto-download-btn" class="action-btn">Download Image</button>
-                </div>
-                
-                <hr>
-                
-                <h3>Decode Wallet Information</h3>
-                <p>Extract previously hidden wallet information from an image.</p>
-                
-                <div class="form-group">
-                    <label for="crypto-decode-image">Select Image:</label>
-                    <input type="file" id="crypto-decode-image" accept="image/*" style="display:none;">
-                    <div class="drop-area" id="crypto-decode-drop-area">
-                        <div class="drop-message">
-                            <i class="fas fa-cloud-upload-alt"></i>
-                            <p>Drop image here or click to select file</p>
+                    
+                    <div class="form-group">
+                        <label for="crypto-algorithm">Steganography Algorithm:</label>
+                        <select id="crypto-algorithm">
+                            <option value="lsb">LSB (Least Significant Bit)</option>
+                            <option value="dct">DCT (Discrete Cosine Transform)</option>
+                            <option value="patchwork">Patchwork</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="crypto-image">Select Image:</label>
+                        <input type="file" id="crypto-image" accept="image/*" style="display:none;">
+                        <div class="drop-area" id="crypto-encode-drop-area">
+                            <div class="drop-message">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Drop image here or click to select file</p>
+                            </div>
+                        </div>
+                        <div id="watermark-warning" class="warning-message hidden">
+                            Warning: This image already contains hidden data. Encoding new data will overwrite it.
                         </div>
                     </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="crypto-decode-password">Password (if required):</label>
-                    <div class="password-container">
-                        <input type="password" id="crypto-decode-password" placeholder="Enter password if the wallet info is encrypted...">
-                        <button id="toggle-crypto-decode-password" class="small-btn">Show</button>
+                    
+                    <div class="form-group">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="auto-clear-crypto">
+                            <span class="checkmark"></span>
+                            <span id="auto-clear-crypto-text">Auto-clear sensitive data after encoding</span>
+                        </label>
                     </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="crypto-decode-algorithm">Steganography Algorithm:</label>
-                    <select id="crypto-decode-algorithm">
-                        <option value="lsb">LSB (Least Significant Bit)</option>
-                        <option value="dct">DCT (Discrete Cosine Transform)</option>
-                        <option value="patchwork">Patchwork</option>
-                        <option value="auto">Auto Detect</option>
-                    </select>
-                </div>
-                
-                <button id="crypto-decode-btn" class="action-btn">Decode Wallet Info</button>
-                
-                <div id="crypto-decode-result" class="result-container hidden">
-                    <h3>Decoding Result</h3>
-                    <div class="message-container">
-                        <textarea id="crypto-decoded-message" readonly></textarea>
+                    
+                    <button id="crypto-encode-btn" class="action-btn">Encode Wallet Info</button>
+                    
+                    <div id="crypto-encode-result" class="result-container hidden">
+                        <h3>Encoding Result</h3>
+                        <div class="image-container">
+                            <img id="crypto-encoded-image" src="" alt="包含加密钱包信息的隐写术图片 - 安全隐藏私钥和助记词的图像" loading="lazy">
+                        </div>
+                        <button id="crypto-download-btn" class="action-btn">Download Image</button>
                     </div>
-                    <div class="button-group">
-                        <button id="crypto-copy-btn" class="action-btn">Copy Text</button>
-                        <button id="crypto-generate-qr-btn" class="action-btn">Generate QR Code</button>
+                    
+                    <hr>
+                    
+                    <h3>Decode Wallet Information</h3>
+                    <p>Extract previously hidden wallet information from an image.</p>
+                    
+                    <div class="form-group">
+                        <label for="crypto-decode-image">Select Image:</label>
+                        <input type="file" id="crypto-decode-image" accept="image/*" style="display:none;">
+                        <div class="drop-area" id="crypto-decode-drop-area">
+                            <div class="drop-message">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Drop image here or click to select file</p>
+                            </div>
+                        </div>
                     </div>
-                    <div id="crypto-qrcode-container" class="qrcode-container hidden">
-                        <canvas id="crypto-qrcode-canvas"></canvas>
-                        <button id="crypto-download-qr-btn" class="action-btn">Download QR Code</button>
+                    
+                    <div class="form-group">
+                        <label for="crypto-decode-password">Password (if required):</label>
+                        <div class="password-container">
+                            <input type="password" id="crypto-decode-password" placeholder="Enter password if the wallet info is encrypted...">
+                            <button id="toggle-crypto-decode-password" class="small-btn">Show</button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="crypto-decode-algorithm">Steganography Algorithm:</label>
+                        <select id="crypto-decode-algorithm">
+                            <option value="lsb">LSB (Least Significant Bit)</option>
+                            <option value="dct">DCT (Discrete Cosine Transform)</option>
+                            <option value="patchwork">Patchwork</option>
+                            <option value="auto">Auto Detect</option>
+                        </select>
+                    </div>
+                    
+                    <button id="crypto-decode-btn" class="action-btn">Decode Wallet Info</button>
+                    
+                    <div id="crypto-decode-result" class="result-container hidden">
+                        <h3>Decoding Result</h3>
+                        <div class="message-container">
+                            <textarea id="crypto-decoded-message" readonly></textarea>
+                        </div>
+                        <div class="button-group">
+                            <button id="crypto-copy-btn" class="action-btn">Copy Text</button>
+                            <button id="crypto-generate-qr-btn" class="action-btn">Generate QR Code</button>
+                        </div>
+                        <div id="crypto-qrcode-container" class="qrcode-container hidden">
+                            <canvas id="crypto-qrcode-canvas"></canvas>
+                            <button id="crypto-download-qr-btn" class="action-btn">Download QR Code</button>
+                        </div>
                     </div>
                 </div>
             </div>
             
             <div id="tutorial" class="tab-pane">
-                <h2 id="tutorial-title">Tutorial & Usage Guidelines</h2>
-                <div class="tutorial-content">
-                    <h3 id="what-is-steg">What is Steganography?</h3>
-                    <p id="steg-definition">Steganography is the practice of hiding information within other non-secret data or a physical object to avoid detection. This tool allows you to hide text messages inside images.</p>
-                    
-                    <h3 id="features">Features</h3>
-                    <ul>
-                        <li id="feature-text-hiding"><strong>Text Hiding</strong> - Hide any text message inside an image</li>
-                        <li id="feature-crypto"><strong>Crypto Wallet Protection</strong> - Securely store your wallet keys and recovery phrases</li>
-                        <li id="feature-browser"><strong>Browser-based</strong> - All operations happen in your browser, no data is sent to any server</li>
-                    </ul>
-                    
-                    <h3 id="how-to-use">How to Use</h3>
-                    <ol>
-                        <li id="encoding-instructions"><strong>Encoding a message:</strong>
-                            <ul>
-                                <li>Select the "Encode Message" tab</li>
-                                <li>Upload an image (preferably PNG format)</li>
-                                <li>Enter your secret text</li>
-                                <li>Click "Encode" and download the resulting image</li>
-                            </ul>
-                        </li>
-                        <li id="decoding-instructions"><strong>Decoding a message:</strong>
-                            <ul>
-                                <li>Select the "Decode Message" tab</li>
-                                <li>Upload an image containing a hidden message</li>
-                                <li>Click "Decode" to reveal the hidden text</li>
-                            </ul>
-                        </li>
-                        <li id="crypto-instructions"><strong>Crypto Wallet Protection:</strong>
-                            <ul>
-                                <li>Select the "Crypto Wallet" tab</li>
-                                <li>Enter your private key or recovery phrase</li>
-                                <li>Upload an image and encode your sensitive information</li>
-                            </ul>
-                        </li>
-                    </ol>
-                    
-                    <h3 id="security-considerations">Security Considerations</h3>
-                    <div class="security-warning">
-                        <p id="security-warning-title"><strong>Important Security Warnings:</strong></p>
+                <div class="tab-content-wrapper">
+                    <h2 id="tutorial-title">Tutorial & Usage Guidelines</h2>
+                    <div class="tutorial-content">
+                        <h3 id="what-is-steg">What is Steganography?</h3>
+                        <p id="steg-definition">Steganography is the practice of hiding information within other non-secret data or a physical object to avoid detection. This tool allows you to hide text messages inside images.</p>
+                        
+                        <h3 id="features">Features</h3>
                         <ul>
-                            <li>This tool does not encrypt your data, it only hides it. Anyone with access to the image and knowledge of steganography can potentially extract your message.</li>
-                            <li>Never share steganographic images containing sensitive information on social media or public platforms, as image compression might destroy the hidden data.</li>
-                            <li>Always keep multiple backups of your crypto wallet information through different secure methods.</li>
-                            <li>For maximum security, use this tool on an offline computer when hiding sensitive financial information.</li>
-                            <li>The tool has a limited capacity for hiding data based on the image size. Larger images can store more data.</li>
+                            <li id="feature-text-hiding"><strong>Text Hiding</strong> - Hide any text message inside an image</li>
+                            <li id="feature-crypto"><strong>Crypto Wallet Protection</strong> - Securely store your wallet keys and recovery phrases</li>
+                            <li id="feature-browser"><strong>Browser-based</strong> - All operations happen in your browser, no data is sent to any server</li>
                         </ul>
-                    </div>
-                    
-                    <h3 id="security-best-practices">Security Best Practices</h3>
-                    <div class="security-best-practices">
-                        <!-- 安全最佳实践内容将由i18n.js动态生成 -->
+                        
+                        <h3 id="how-to-use">How to Use</h3>
+                        <ol>
+                            <li id="encoding-instructions"><strong>Encoding a message:</strong>
+                                <ul>
+                                    <li>Select the "Encode Message" tab</li>
+                                    <li>Upload an image (preferably PNG format)</li>
+                                    <li>Enter your secret text</li>
+                                    <li>Click "Encode" and download the resulting image</li>
+                                </ul>
+                            </li>
+                            <li id="decoding-instructions"><strong>Decoding a message:</strong>
+                                <ul>
+                                    <li>Select the "Decode Message" tab</li>
+                                    <li>Upload an image containing a hidden message</li>
+                                    <li>Click "Decode" to reveal the hidden text</li>
+                                </ul>
+                            </li>
+                            <li id="crypto-instructions"><strong>Crypto Wallet Protection:</strong>
+                                <ul>
+                                    <li>Select the "Crypto Wallet" tab</li>
+                                    <li>Enter your private key or recovery phrase</li>
+                                    <li>Upload an image and encode your sensitive information</li>
+                                </ul>
+                            </li>
+                        </ol>
+                        
+                        <h3 id="security-considerations">Security Considerations</h3>
+                        <div class="security-warning">
+                            <p id="security-warning-title"><strong>Important Security Warnings:</strong></p>
+                            <ul>
+                                <li>This tool does not encrypt your data, it only hides it. Anyone with access to the image and knowledge of steganography can potentially extract your message.</li>
+                                <li>Never share steganographic images containing sensitive information on social media or public platforms, as image compression might destroy the hidden data.</li>
+                                <li>Always keep multiple backups of your crypto wallet information through different secure methods.</li>
+                                <li>For maximum security, use this tool on an offline computer when hiding sensitive financial information.</li>
+                                <li>The tool has a limited capacity for hiding data based on the image size. Larger images can store more data.</li>
+                            </ul>
+                        </div>
+                        
+                        <h3 id="security-best-practices">Security Best Practices</h3>
+                        <div class="security-best-practices">
+                            <!-- 安全最佳实践内容将由i18n.js动态生成 -->
+                        </div>
                     </div>
                 </div>
             </div>
             
             <div id="faq" class="tab-pane">
-                <h2 id="faq-title">Frequently Asked Questions</h2>
-                <div class="faq-content">
-                    <!-- FAQ内容将由i18n.js动态生成 -->
+                <div class="tab-content-wrapper">
+                    <h2 id="faq-title">Frequently Asked Questions</h2>
+                    <div class="faq-content">
+                        <!-- FAQ内容将由i18n.js动态生成 -->
+                    </div>
                 </div>
             </div>
         </div>
