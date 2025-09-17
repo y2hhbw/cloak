@@ -1,7 +1,7 @@
 {
-  "name": "cloak: a better image steganography tool",
-  "short_name": "cloak",
-  "description": "Hide secret messages in images securely",
+  "name": "Cloak - Secure Online Image Steganography Tool",
+  "short_name": "Cloak",
+  "description": "The most secure online tool for hiding text messages in images. Browser-based processing, password protection, and crypto wallet integration.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

@@ -1270,8 +1270,8 @@ hr {
     flex-wrap: wrap;
 }
 
-.cta-buttons .primary-btn,
-.cta-buttons .secondary-btn {
+/* 基础按钮样式 */
+.btn {
     padding: 1rem 2rem;
     font-size: 1.1rem;
     border-radius: 6px;
@@ -1279,17 +1279,48 @@ hr {
     transition: all 0.3s ease;
     text-decoration: none;
     display: inline-block;
-    border: 2px solid #3498db; /* 统一边框 */
-    background: #3498db;
-    color: white;
+    font-weight: 600;
+    text-align: center;
+    border: 2px solid transparent;
+    outline: none;
 }
 
-.cta-buttons .primary-btn:hover,
-.cta-buttons .secondary-btn:hover {
-    background: #2980b9;
-    border-color: #2980b9; /* 统一悬停边框颜色 */
-    transform: translateY(-2px);
+/* 主要按钮样式 */
+.btn.primary-btn {
+    background: #3498db;
+    color: white;
+    border-color: #3498db;
 }
+
+.btn.primary-btn:hover {
+    background: #2980b9;
+    border-color: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+}
+
+/* 次要按钮样式 */
+.btn.secondary-btn {
+    background: #f8f9fa;
+    color: #333;
+    border-color: #ddd;
+}
+
+.btn.secondary-btn:hover {
+    background: #e9ecef;
+    border-color: #adb5bd;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* CTA按钮特殊样式 */
+.cta-buttons .btn {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    border-radius: 6px;
+    min-width: 180px;
+}
+
 
 /* 主要响应式设计 */
 @media (max-width: 768px) {

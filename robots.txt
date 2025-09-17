@@ -2,10 +2,10 @@ User-agent: *
 Allow: /
 Crawl-delay: 1
 
-# 站点地图
+# Sitemap
 Sitemap: http://cloak.y2hhbw.cyou/sitemap.xml
 
-# 禁止访问敏感文件
+# Disallow access to sensitive files
 Disallow: /*.js$
 Disallow: /*.css$
 Disallow: /manifest.json
