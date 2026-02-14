@@ -26,6 +26,7 @@ const I18N = {
             // 通用
             'app_title': 'cloak: a better image steganography tool',
             'app_description': 'Hide text messages in images or extract hidden text from images. All operations are performed in your browser, no data is uploaded.',
+            'seo_description': 'Secure online image steganography tool to hide and extract text messages in-browser with no data upload.',
             
             // 标签页
             'tab_about': 'Why Better',
@@ -213,6 +214,7 @@ const I18N = {
             // 通用
             'app_title': 'cloak: 更好的图像隐写工具',
             'app_description': '在图像中隐藏文本信息或从图像中提取隐藏文本。所有操作都在您的浏览器中执行，不会上传任何数据。',
+            'seo_description': '安全的在线图像隐写工具，可在浏览器内隐藏和提取文本消息，数据不上传服务器。',
             
             // 标签页
             'tab_about': '为什么更好',
@@ -1614,6 +1616,53 @@ const I18N = {
         const translations = this.translations[this.currentLanguage];
         return translations && translations[key] ? translations[key] : key;
     },
+
+    /**
+     * 获取当前语言对应的 HTML lang 标记
+     * @returns {string}
+     */
+    getHtmlLang: function() {
+        const languageMap = {
+            'en': 'en',
+            'zh': 'zh-CN',
+            'zh-tw': 'zh-TW',
+            'fr': 'fr',
+            'ja': 'ja',
+            'es': 'es',
+            'de': 'de',
+            'ru': 'ru'
+        };
+
+        return languageMap[this.currentLanguage] || 'en';
+    },
+
+    /**
+     * 获取当前语言对应的 Open Graph locale
+     * @returns {string}
+     */
+    getOgLocale: function() {
+        const localeMap = {
+            'en': 'en_US',
+            'zh': 'zh_CN',
+            'zh-tw': 'zh_TW',
+            'fr': 'fr_FR',
+            'ja': 'ja_JP',
+            'es': 'es_ES',
+            'de': 'de_DE',
+            'ru': 'ru_RU'
+        };
+
+        return localeMap[this.currentLanguage] || 'en_US';
+    },
+
+    /**
+     * 获取 SEO 描述文本，没有专门翻译时回退到 app_description
+     * @returns {string}
+     */
+    getSeoDescription: function() {
+        const translations = this.translations[this.currentLanguage] || {};
+        return translations.seo_description || this.t('app_description');
+    },
     
     /**
      * 应用翻译到页面元素
@@ -1621,6 +1670,21 @@ const I18N = {
     applyTranslations: function() {
         // 更新页面标题
         document.title = this.t('app_title');
+
+        // 同步语言与关键 SEO 元信息
+        document.documentElement.lang = this.getHtmlLang();
+        const descriptionMeta = document.querySelector('meta[name="description"]');
+        if (descriptionMeta) {
+            descriptionMeta.setAttribute('content', this.getSeoDescription());
+        }
+        const ogDescription = document.querySelector('meta[property="og:description"]');
+        if (ogDescription) {
+            ogDescription.setAttribute('content', this.getSeoDescription());
+        }
+        const ogLocale = document.querySelector('meta[property="og:locale"]');
+        if (ogLocale) {
+            ogLocale.setAttribute('content', this.getOgLocale());
+        }
         
         // 更新主标题和描述
         document.querySelector('h1').textContent = this.t('app_title');

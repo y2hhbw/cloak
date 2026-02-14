@@ -14,9 +14,6 @@ addEventListener('fetch', event => {
  */
 async function handleRequest(event) {
   try {
-    // 获取请求的URL
-    const url = new URL(event.request.url)
-    
     // 从KV存储中获取静态资源
     let response = await getAssetFromKV(event)
     
@@ -25,11 +22,11 @@ async function handleRequest(event) {
     response.headers.set('Cache-Control', 'public, max-age=86400')
     
     // 设置安全相关的头
-    response.headers.set('X-XSS-Protection', '1; mode=block')
     response.headers.set('X-Content-Type-Options', 'nosniff')
     response.headers.set('X-Frame-Options', 'DENY')
     response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
-    response.headers.set('Feature-Policy', "camera 'self'; microphone 'none'")
+    response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()')
+    response.headers.set('Content-Security-Policy', "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'")
     
     return response
   } catch (e) {

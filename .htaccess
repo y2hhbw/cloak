@@ -1,13 +1,13 @@
 # Enable URL rewriting
 RewriteEngine On
 
-# Redirect non-www to www
-RewriteCond %{HTTP_HOST} !^www\. [NC]
-RewriteRule ^(.*)$ https://www.%{HTTP_HOST}/$1 [R=301,L]
-
 # Redirect HTTP to HTTPS
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Redirect www to apex domain (matches canonical)
+RewriteCond %{HTTP_HOST} ^www\.cloak\.y2hhbw\.cyou$ [NC]
+RewriteRule ^(.*)$ https://cloak.y2hhbw.cyou/$1 [R=301,L]
 
 # Set browser caching
 <IfModule mod_expires.c>

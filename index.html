@@ -30,7 +30,6 @@
 
     <!-- Humans.txt -->
     <link rel="author" href="humans.txt">
-    <meta name="author" content="Cloak Team">
 
     <!-- Hreflang 标签 -->
     <link rel="alternate" hreflang="en" href="https://cloak.y2hhbw.cyou/?lang=en">
@@ -46,25 +45,23 @@
     <!-- 性能优化 -->
     <link rel="preload" href="style.css" as="style">
     <link rel="preload" href="app.js" as="script">
-    <link rel="dns-prefetch" href="//fonts.googleapis.com">
     
     <!-- PWA支持 -->
     <link rel="manifest" href="manifest.json">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
-    <meta name="theme-color" content="#667eea">
+    <meta name="theme-color" content="#4285f4">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Cloak">
     
     <!-- 安全性 -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net/; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'none';">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
-    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
     <link rel="apple-touch-icon" href="icon-192x192.svg">
-    <meta name="theme-color" content="#4285f4">
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
-    <script src="bip39-wordlist.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js" defer></script>
+    <script src="bip39-wordlist.js" defer></script>
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -100,7 +97,7 @@
         "@type": "Organization",
         "name": "Cloak Team"
       },
-      "inLanguage": ["en-US", "zh-CN", "ja-JP", "fr-FR", "es-ES", "de-DE", "ru-RU", "ko-KR"],
+      "inLanguage": ["en-US", "zh-CN", "zh-TW", "ja-JP", "fr-FR", "es-ES", "de-DE", "ru-RU"],
       "keywords": "steganography,image steganography,hide message,secret message,data hiding,online tool,free steganography,crypto wallet,password protection"
     }
     </script>
@@ -555,8 +552,8 @@
         <p id="buymeacoffee"><a href="https://www.buymeacoffee.com/hallidayyy" target="_blank" rel="noopener noreferrer">☕ Buy me a coffee</a></p>
     </footer>
     
-    <script src="steganography.js"></script>
-    <script src="i18n.js"></script>
-    <script src="app.js"></script>
+    <script src="steganography.js" defer></script>
+    <script src="i18n.js" defer></script>
+    <script src="app.js" defer></script>
 </body>
 </html>

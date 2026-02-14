@@ -5,7 +5,8 @@
   "main": "workers-site/index.js",
   "scripts": {
     "dev": "wrangler dev",
-    "publish": "wrangler publish"
+    "publish": "wrangler publish",
+    "test": "node --test tests/seo-config.test.js"
   },
   "dependencies": {
     "@cloudflare/kv-asset-handler": "^0.3.0"

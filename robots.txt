@@ -5,5 +5,4 @@ Crawl-delay: 1
 # Sitemap
 Sitemap: https://cloak.y2hhbw.cyou/sitemap.xml
 
-# Disallow access to sensitive files
-Disallow: /manifest.json
+# Keep crawl access for static assets used by SEO/PWA
