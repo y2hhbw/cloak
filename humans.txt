@@ -1,0 +1,32 @@
+/* TEAM */
+Developer: Cloak Team
+Site: https://cloak.y2hhbw.cyou/
+Contact: https://www.buymeacoffee.com/hallidayyy
+Location: Global
+
+/* SITE */
+Last update: 2026/02/14
+Standards: HTML5, CSS3, JavaScript ES6+
+Components: Steganography.js, BIP39 Wordlist, QRCode.js
+Software: Claude Code, Modern Web Browsers
+Hosting: Cloudflare
+
+/* THANKS */
+Special thanks to the open-source community for:
+- QRCode.js library
+- BIP39 standard implementation
+- Steganography algorithm research
+
+/* TECHNOLOGY */
+Languages: HTML5, CSS3, JavaScript
+Frameworks: Vanilla JS (no framework dependencies)
+Security: Client-side processing, AES-256 encryption
+Algorithms: LSB, DCT, Patchwork steganography
+PWA: Progressive Web App enabled
+Internationalization: 8 languages supported
+
+/* PRIVACY */
+Data Processing: 100% client-side
+Server Upload: None - all processing in browser
+Analytics: Privacy-focused (no tracking)
+Cookies: None required for core functionality

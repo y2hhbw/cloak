@@ -115,7 +115,7 @@ function simulateFullProcess() {
   // Extract message content
   for (let i = 0; i < bitsToRead; i++) {
     const pixelIndex = Math.floor((i + 32) / 3) * 4 + 32; // 从长度信息后开始，从第8个像素后开始 (8 * 4 = 32)
-    const channelIndex = i % 3;
+    const channelIndex = (i + 32) % 3;
     
     if (pixelIndex + channelIndex < storedPixels.length) {
       const bit = (storedPixels[pixelIndex + channelIndex] & 0x01).toString();

@@ -1480,3 +1480,390 @@ hr {
         font-size: 0.9rem;
     }
 }
+
+/* UI polish overrides (non-breaking) */
+:root {
+    --ui-brand-1: #667eea;
+    --ui-brand-2: #764ba2;
+    --ui-text: #2d3748;
+    --ui-muted: #718096;
+    --ui-surface: #ffffff;
+    --ui-surface-soft: #f7fafc;
+    --ui-border: #e2e8f0;
+    --ui-focus: 0 0 0 3px rgba(102, 126, 234, 0.22);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+.container {
+    animation: uiFadeIn 0.35s ease-out;
+}
+
+@keyframes uiFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.tab-pane.active {
+    animation: uiPaneIn 0.25s ease-out;
+}
+
+@keyframes uiPaneIn {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.tab-btn:focus-visible,
+.action-btn:focus-visible,
+.secondary-btn:focus-visible,
+.btn:focus-visible,
+.small-btn:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+input:focus-visible {
+    outline: none;
+    box-shadow: var(--ui-focus);
+}
+
+/* Keep all text/password inputs full-width; rely on container layout for button spacing */
+input[type="password"],
+input[type="text"] {
+    width: 100%;
+    border: 2px solid var(--ui-border);
+    border-radius: 12px;
+    padding: 0.85rem 0.9rem;
+    min-width: 0;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+}
+
+input[type="password"]:hover,
+input[type="text"]:hover {
+    border-color: #cbd5e0;
+}
+
+.password-container {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.password-container input {
+    flex: 1 1 auto;
+}
+
+.small-btn {
+    flex: 0 0 auto;
+    padding: 0.65rem 0.85rem;
+    border-radius: 10px;
+    background: #6b7280;
+}
+
+.drop-area {
+    border: 2px dashed #bfcbe3;
+    border-radius: 14px;
+    padding: 1.4rem;
+    background: linear-gradient(180deg, #f8fbff 0%, #f3f7fc 100%);
+}
+
+.drop-area:hover {
+    border-color: var(--ui-brand-1);
+    background: linear-gradient(180deg, #f3f7ff 0%, #edf4ff 100%);
+}
+
+.drop-area.active {
+    border-color: #2f9e62;
+    background: #ecfdf3;
+}
+
+.drop-area.file-selected {
+    border-color: var(--ui-brand-1);
+    background: #eef2ff;
+}
+
+.result-container {
+    border: 1px solid #dbe4f3;
+}
+
+.feature-card {
+    border: 1px solid #d9e2ef;
+    border-radius: 14px;
+}
+
+.cta-section {
+    border: 1px solid #e5eaf4;
+    border-radius: 14px;
+}
+
+/* Mobile: preserve horizontal tab strip (avoid tall stacked tabs) */
+@media (max-width: 768px) {
+    .tabs {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        gap: 0.25rem;
+    }
+
+    .tab-btn {
+        min-width: max-content;
+        border-bottom: none;
+    }
+
+    input[type="password"] {
+        width: 100%;
+    }
+}
+
+/* Visual Upgrade V2: Modern Glass */
+:root {
+    --glass-bg: rgba(255, 255, 255, 0.76);
+    --glass-bg-strong: rgba(255, 255, 255, 0.9);
+    --glass-border: rgba(255, 255, 255, 0.42);
+    --ink-1: #0f172a;
+    --ink-2: #334155;
+    --ink-3: #64748b;
+    --brand-a: #1d4ed8;
+    --brand-b: #0ea5e9;
+    --brand-c: #22c55e;
+    --soft-a: #dbeafe;
+    --soft-b: #f0f9ff;
+    --shadow-lg: 0 24px 60px rgba(15, 23, 42, 0.22);
+    --shadow-md: 0 10px 28px rgba(15, 23, 42, 0.14);
+    --ring: 0 0 0 3px rgba(29, 78, 216, 0.25);
+}
+
+body {
+    font-family: "Avenir Next", "Segoe UI Variable", "SF Pro Display", "IBM Plex Sans", "Noto Sans", sans-serif;
+    color: var(--ink-2);
+    background:
+        radial-gradient(1200px 600px at -10% -10%, rgba(56, 189, 248, 0.35), transparent 65%),
+        radial-gradient(900px 500px at 110% 0%, rgba(37, 99, 235, 0.32), transparent 60%),
+        linear-gradient(145deg, #eaf2ff 0%, #f6fbff 42%, #eef7f3 100%);
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1120px;
+    border-radius: 28px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-lg);
+    backdrop-filter: blur(14px);
+}
+
+.header-container {
+    background:
+        linear-gradient(130deg, rgba(29, 78, 216, 0.92) 0%, rgba(14, 165, 233, 0.88) 58%, rgba(34, 197, 94, 0.82) 100%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.28);
+    padding: 2.2rem 2rem;
+}
+
+h1 {
+    font-size: 2.1rem;
+    letter-spacing: -0.035em;
+    text-shadow: 0 8px 28px rgba(2, 6, 23, 0.35);
+}
+
+.description {
+    background: rgba(248, 252, 255, 0.88);
+    color: var(--ink-3);
+    border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.tabs {
+    background: rgba(255, 255, 255, 0.78);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+    gap: 0.35rem;
+    padding-top: 0.6rem;
+}
+
+.tab-btn {
+    border-radius: 999px;
+    padding: 0.72rem 1.15rem;
+    font-weight: 600;
+    color: #475569;
+}
+
+.tab-btn:hover {
+    background: rgba(219, 234, 254, 0.8);
+    color: #1e3a8a;
+}
+
+.tab-btn.active {
+    color: #0f172a;
+    background: linear-gradient(135deg, rgba(191, 219, 254, 0.86), rgba(224, 242, 254, 0.92));
+    box-shadow: inset 0 0 0 1px rgba(29, 78, 216, 0.2), 0 8px 18px rgba(14, 116, 144, 0.18);
+}
+
+.tab-btn.active::after {
+    display: none;
+}
+
+.tab-pane {
+    background: transparent;
+}
+
+.tab-content-wrapper {
+    background: var(--glass-bg-strong);
+    border: 1px solid rgba(203, 213, 225, 0.55);
+    border-radius: 22px;
+    padding: 1.4rem 1.5rem;
+    box-shadow: var(--shadow-md);
+}
+
+h2 {
+    color: var(--ink-1);
+    letter-spacing: -0.03em;
+}
+
+h3 {
+    color: #1e293b;
+}
+
+label {
+    color: #1e293b;
+}
+
+select,
+textarea,
+input[type="password"],
+input[type="text"] {
+    border-radius: 14px;
+    border: 1px solid #cbd5e1;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+select:focus,
+textarea:focus,
+input[type="password"]:focus,
+input[type="text"]:focus {
+    border-color: #3b82f6;
+    box-shadow: var(--ring);
+}
+
+.action-btn,
+.btn.primary-btn {
+    background: linear-gradient(135deg, #1d4ed8 0%, #0284c7 55%, #0ea5e9 100%);
+    border: 1px solid rgba(255, 255, 255, 0.38);
+    box-shadow: 0 12px 24px rgba(30, 64, 175, 0.3);
+}
+
+.action-btn:hover,
+.btn.primary-btn:hover {
+    transform: translateY(-2px) scale(1.01);
+    box-shadow: 0 16px 28px rgba(30, 64, 175, 0.36);
+}
+
+.secondary-btn,
+.btn.secondary-btn,
+.small-btn {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    color: #1f2937;
+    border: 1px solid #cbd5e1;
+    box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+}
+
+.drop-area {
+    border: 2px dashed rgba(59, 130, 246, 0.45);
+    background: linear-gradient(180deg, #f8fbff 0%, #eef6ff 100%);
+}
+
+.drop-area.active {
+    border-color: rgba(34, 197, 94, 0.72);
+    background: linear-gradient(180deg, #f1fff6 0%, #e8faef 100%);
+}
+
+.drop-message i {
+    color: #2563eb;
+}
+
+.result-container,
+.faq-item,
+.comparison-table,
+.security-warning,
+.cta-section,
+.feature-card,
+.image-container,
+.qrcode-container {
+    border: 1px solid rgba(148, 163, 184, 0.28);
+    border-radius: 16px;
+    box-shadow: 0 10px 22px rgba(15, 23, 42, 0.1);
+}
+
+.feature-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+}
+
+.feature-card:hover {
+    transform: translateY(-6px);
+}
+
+.comparison-header {
+    background: linear-gradient(135deg, #1d4ed8 0%, #0284c7 100%);
+}
+
+.comparison-cloak {
+    background: linear-gradient(180deg, #ecfdf5 0%, #dcfce7 100%);
+    color: #15803d;
+}
+
+.comparison-others {
+    background: linear-gradient(180deg, #fff1f2 0%, #ffe4e6 100%);
+    color: #be123c;
+}
+
+.faq-question {
+    background: linear-gradient(180deg, #fbfdff 0%, #f1f6ff 100%);
+}
+
+.faq-question.active {
+    background: linear-gradient(135deg, #1d4ed8 0%, #0284c7 100%);
+}
+
+.cta-section {
+    background: linear-gradient(135deg, #f7fbff 0%, #edf7ff 55%, #f0fdf4 100%);
+}
+
+/* CTA buttons: force consistent size across different label lengths */
+.cta-buttons .btn {
+    width: 220px;
+    min-height: 52px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+    .container {
+        border-radius: 20px;
+    }
+
+    .header-container {
+        border-radius: 20px 20px 0 0;
+    }
+
+    .tab-content-wrapper {
+        padding: 1rem;
+        border-radius: 16px;
+    }
+
+    h1 {
+        font-size: 1.7rem;
+    }
+}

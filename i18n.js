@@ -1539,12 +1539,7 @@ const I18N = {
                     existingSelector.value = langCode;
                 }
             }
-            
-            // 确保事件监听器已添加
-            existingSelector.addEventListener('change', (e) => {
-                this.changeLanguage(e.target.value);
-            });
-            
+
             return;
         }
         
@@ -1595,27 +1590,18 @@ const I18N = {
      */
     changeLanguage: function(langCode) {
         if (this.supportedLanguages[langCode]) {
-            // 检查是否是用户手动切换语言（而不是页面加载时的自动设置）
-            const isManualChange = langCode !== this.currentLanguage;
-            
             // 保存新的语言选择到本地存储
             this.currentLanguage = langCode;
             localStorage.setItem('preferred_language', langCode);
-            
-            // 如果是手动切换语言，则刷新页面
-            if (isManualChange && document.readyState === 'complete') {
-                // 添加一个标记，防止刷新后再次触发刷新
-                sessionStorage.setItem('language_just_changed', 'true');
-                window.location.reload();
-            } else {
-                // 如果是页面加载时的自动设置，则只应用翻译而不刷新
-                this.applyTranslations();
-                this.updateEncodeTab();
-                this.updateDecodeTab();
-                this.updateCryptoTab();
-                this.updateTutorialTab();
-                this.updateFAQTab();
+
+            // 保持顶部语言下拉状态与当前语言一致
+            const languageSelect = document.getElementById('language-select');
+            if (languageSelect && languageSelect.value !== langCode) {
+                languageSelect.value = langCode;
             }
+
+            // 直接更新文案，避免整页刷新导致闪烁
+            this.applyTranslations();
         }
     },
     

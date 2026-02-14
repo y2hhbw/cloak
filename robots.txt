@@ -3,10 +3,7 @@ Allow: /
 Crawl-delay: 1
 
 # Sitemap
-Sitemap: http://cloak.y2hhbw.cyou/sitemap.xml
+Sitemap: https://cloak.y2hhbw.cyou/sitemap.xml
 
 # Disallow access to sensitive files
-Disallow: /*.js$
-Disallow: /*.css$
 Disallow: /manifest.json
-Disallow: /favicon.svg

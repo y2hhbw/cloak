@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://cloak.y2hhbw.cyou/</loc>
-    <lastmod>2024-01-15</lastmod>
+    <loc>https://cloak.y2hhbw.cyou/</loc>
+    <lastmod>2026-02-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="http://cloak.y2hhbw.cyou/?lang=en"/>
-    <xhtml:link rel="alternate" hreflang="zh-CN" href="http://cloak.y2hhbw.cyou/?lang=zh"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="http://cloak.y2hhbw.cyou/?lang=ja"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="http://cloak.y2hhbw.cyou/?lang=fr"/>
-    <xhtml:link rel="alternate" hreflang="es" href="http://cloak.y2hhbw.cyou/?lang=es"/>
-    <xhtml:link rel="alternate" hreflang="de" href="http://cloak.y2hhbw.cyou/?lang=de"/>
-    <xhtml:link rel="alternate" hreflang="ru" href="http://cloak.y2hhbw.cyou/?lang=ru"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://cloak.y2hhbw.cyou/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://cloak.y2hhbw.cyou/?lang=zh"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://cloak.y2hhbw.cyou/?lang=zh-tw"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://cloak.y2hhbw.cyou/?lang=ja"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://cloak.y2hhbw.cyou/?lang=fr"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://cloak.y2hhbw.cyou/?lang=es"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://cloak.y2hhbw.cyou/?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://cloak.y2hhbw.cyou/?lang=ru"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cloak.y2hhbw.cyou/"/>
   </url>
 </urlset>

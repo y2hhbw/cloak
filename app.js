@@ -317,7 +317,7 @@ function setupWordValidation(input) {
             const errorTip = document.createElement('div');
             errorTip.className = 'error-tip';
             // 使用i18n翻译系统获取当前语言的错误提示
-            errorTip.textContent = i18n.t('invalid_bip39_word');
+            errorTip.textContent = I18N.t('invalid_bip39_word');
             this.parentNode.appendChild(errorTip);
             
             // 3秒后移除错误提示
@@ -368,17 +368,17 @@ function setupWordValidation(input) {
         phraseValidationMessage.classList.remove('hidden');
         
         if (isValid && allWordsValid && countCorrect) {
-            phraseValidationMessage.textContent = `✓ ${i18n.t('valid_mnemonic', {count: expectedCount})}`;
+            phraseValidationMessage.textContent = `✓ ${I18N.t('valid_mnemonic', {count: expectedCount})}`;
             phraseValidationMessage.className = 'phrase-validation-message valid';
         } else {
             let errorMessage = '';
             
             if (!isValid) {
-                errorMessage = i18n.t('fill_all_mnemonic_inputs');
+                errorMessage = I18N.t('fill_all_mnemonic_inputs');
             } else if (!allWordsValid) {
-                errorMessage = i18n.t('contains_invalid_bip39_words');
+                errorMessage = I18N.t('contains_invalid_bip39_words');
             } else if (!countCorrect) {
-                errorMessage = i18n.t('mnemonic_must_contain', {count: expectedCount});
+                errorMessage = I18N.t('mnemonic_must_contain', {count: expectedCount});
             }
             
             phraseValidationMessage.textContent = `✗ ${errorMessage}`;
@@ -776,7 +776,8 @@ function setupWordValidation(input) {
             const algorithm = document.getElementById('crypto-encode-algorithm').value;
             
             // Use steganography tool to encode the message with password and algorithm
-            const encodedDataURL = await Steganography.encode(image, messageToEncode, password, algorithm);
+            const outputOptions = getStegoOutputOptions(file);
+            const encodedDataURL = await Steganography.encode(image, messageToEncode, password, algorithm, outputOptions);
             
             // Display the result
             cryptoEncodedImage.src = encodedDataURL;
@@ -786,7 +787,8 @@ function setupWordValidation(input) {
             cryptoDownloadBtn.onclick = () => {
                 const link = document.createElement('a');
                 link.href = encodedDataURL;
-                link.download = 'wallet_' + file.name.split('.')[0] + '.png';
+                const ext = getExtensionFromDataUrl(encodedDataURL);
+                link.download = 'wallet_' + file.name.split('.')[0] + '.' + ext;
                 link.click();
             };
             
@@ -950,7 +952,8 @@ function setupWordValidation(input) {
             const algorithm = document.getElementById('encode-algorithm').value;
             
             // Use steganography tool to encode the message with password and algorithm
-            const encodedDataURL = await Steganography.encode(image, message, password, algorithm);
+            const outputOptions = getStegoOutputOptions(file);
+            const encodedDataURL = await Steganography.encode(image, message, password, algorithm, outputOptions);
             
             // Display the result
             encodedImage.src = encodedDataURL;
@@ -960,7 +963,8 @@ function setupWordValidation(input) {
             downloadBtn.onclick = () => {
                 const link = document.createElement('a');
                 link.href = encodedDataURL;
-                link.download = 'encoded_' + file.name.split('.')[0] + '.png';
+                const ext = getExtensionFromDataUrl(encodedDataURL);
+                link.download = 'encoded_' + file.name.split('.')[0] + '.' + ext;
                 link.click();
             };
             
@@ -1058,3 +1062,18 @@ function setupWordValidation(input) {
         });
     }
 });
+    function getStegoOutputOptions(file) {
+        const sourceType = (file && file.type ? file.type.toLowerCase() : '');
+        if (sourceType === 'image/jpeg' || sourceType === 'image/jpg' || sourceType === 'image/webp') {
+            // Lossy formats keep size closer to original, but may reduce decode robustness.
+            return { mimeType: sourceType === 'image/jpg' ? 'image/jpeg' : sourceType, quality: 0.92 };
+        }
+        return { mimeType: 'image/png' };
+    }
+
+    function getExtensionFromDataUrl(dataUrl) {
+        if (typeof dataUrl !== 'string') return 'png';
+        if (dataUrl.startsWith('data:image/jpeg')) return 'jpg';
+        if (dataUrl.startsWith('data:image/webp')) return 'webp';
+        return 'png';
+    }
