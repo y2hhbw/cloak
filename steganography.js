@@ -7,6 +7,11 @@
 class Steganography {
     static HEADER_OFFSET_BYTES = 32;
     static MAX_MESSAGE_BYTES = 10000;
+    static PROCESS_CHUNK_SIZE = 16384;
+    static PBKDF2_ITERATIONS = 210000;
+    static AES_KEY_LENGTH = 256;
+    static SALT_BYTES = 16;
+    static IV_BYTES = 12;
 
     static getMaxEmbeddableBits(pixelArrayLength, algorithm = 'lsb') {
         const dataBytes = pixelArrayLength - this.HEADER_OFFSET_BYTES;
@@ -19,32 +24,129 @@ class Steganography {
         return usablePixels * 3;
     }
 
+    static getMaxEmbeddableBytes(pixelArrayLength, algorithm = 'lsb') {
+        const maxBits = this.getMaxEmbeddableBits(pixelArrayLength, algorithm);
+        const payloadBits = Math.max(0, maxBits - 32);
+        return Math.floor(payloadBits / 8);
+    }
+
+    static estimatePixelArrayLength(width, height) {
+        if (!Number.isFinite(width) || !Number.isFinite(height) || width <= 0 || height <= 0) {
+            return 0;
+        }
+        return Math.floor(width) * Math.floor(height) * 4;
+    }
+
+    static estimateMaxMessageBytes(width, height, algorithm = 'lsb') {
+        const pixelArrayLength = this.estimatePixelArrayLength(width, height);
+        return this.getMaxEmbeddableBytes(pixelArrayLength, algorithm);
+    }
+
+    static _getCryptoProvider() {
+        if (typeof globalThis !== 'undefined' && globalThis.crypto && globalThis.crypto.subtle) {
+            return globalThis.crypto;
+        }
+
+        if (typeof require !== 'undefined') {
+            try {
+                const { webcrypto } = require('node:crypto');
+                if (webcrypto && webcrypto.subtle) return webcrypto;
+            } catch (error) {
+                // noop
+            }
+        }
+
+        throw new Error('当前环境不支持 Web Crypto API');
+    }
+
+    static _toBase64(bytes) {
+        if (typeof Buffer !== 'undefined') {
+            return Buffer.from(bytes).toString('base64');
+        }
+        let binary = '';
+        for (let i = 0; i < bytes.length; i++) {
+            binary += String.fromCharCode(bytes[i]);
+        }
+        return btoa(binary);
+    }
+
+    static _fromBase64(base64) {
+        if (typeof Buffer !== 'undefined') {
+            return new Uint8Array(Buffer.from(base64, 'base64'));
+        }
+        const binary = atob(base64);
+        const bytes = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i++) {
+            bytes[i] = binary.charCodeAt(i);
+        }
+        return bytes;
+    }
+
+    static _base64Length(byteLength) {
+        if (!Number.isFinite(byteLength) || byteLength <= 0) return 0;
+        return Math.ceil(byteLength / 3) * 4;
+    }
+
+    static async _deriveAesGcmKey(password, saltBytes) {
+        const cryptoProvider = this._getCryptoProvider();
+        const encoder = new TextEncoder();
+        const passwordBytes = encoder.encode(password);
+        const keyMaterial = await cryptoProvider.subtle.importKey(
+            'raw',
+            passwordBytes,
+            'PBKDF2',
+            false,
+            ['deriveKey']
+        );
+
+        return cryptoProvider.subtle.deriveKey(
+            {
+                name: 'PBKDF2',
+                salt: saltBytes,
+                iterations: this.PBKDF2_ITERATIONS,
+                hash: 'SHA-256'
+            },
+            keyMaterial,
+            { name: 'AES-GCM', length: this.AES_KEY_LENGTH },
+            false,
+            ['encrypt', 'decrypt']
+        );
+    }
+
+    static async _yieldToMainThread(iteration) {
+        if (iteration > 0 && iteration % this.PROCESS_CHUNK_SIZE === 0) {
+            await new Promise((resolve) => setTimeout(resolve, 0));
+        }
+    }
+
     /**
      * 使用密码加密文本
      * @param {string} text - 要加密的文本
      * @param {string} password - 加密密码
      * @returns {string} - 返回加密后的文本
      */
-    static encryptText(text, password) {
+    static async encryptText(text, password) {
         if (!password || password.trim() === '') {
             return text;
         }
 
+        const cryptoProvider = this._getCryptoProvider();
         const encoder = new TextEncoder();
-        const textBytes = encoder.encode(`CLOAK:${text}`);
-        const passBytes = encoder.encode(password);
+        const salt = cryptoProvider.getRandomValues(new Uint8Array(this.SALT_BYTES));
+        const iv = cryptoProvider.getRandomValues(new Uint8Array(this.IV_BYTES));
+        const key = await this._deriveAesGcmKey(password, salt);
+        const plainBytes = encoder.encode(`CLOAK3:${text}`);
+        const encrypted = await cryptoProvider.subtle.encrypt({ name: 'AES-GCM', iv }, key, plainBytes);
+        const encryptedBytes = new Uint8Array(encrypted);
 
-        const resultBytes = new Uint8Array(textBytes.length);
-        for (let i = 0; i < textBytes.length; i++) {
-            resultBytes[i] = textBytes[i] ^ passBytes[i % passBytes.length];
-        }
+        const payload = {
+            v: 3,
+            s: this._toBase64(salt),
+            i: this._toBase64(iv),
+            c: this._toBase64(encryptedBytes)
+        };
 
-        let binaryString = '';
-        for (let i = 0; i < resultBytes.length; i++) {
-            binaryString += String.fromCharCode(resultBytes[i]);
-        }
-
-        return 'ENCRYPTED2:' + btoa(binaryString);
+        return `ENCRYPTED3:${this._toBase64(encoder.encode(JSON.stringify(payload)))}`;
     }
 
     /**
@@ -53,8 +155,44 @@ class Steganography {
      * @param {string} password - 解密密码
      * @returns {string} - 返回解密后的文本
      */
-    static decryptText(encryptedText, password) {
-        if (!encryptedText.startsWith('ENCRYPTED2:') && !encryptedText.startsWith('ENCRYPTED:')) {
+    static _decryptLegacyText(encryptedText, password) {
+        const encodedText = encryptedText.startsWith('ENCRYPTED2:')
+            ? encryptedText.substring(11)
+            : encryptedText.substring(10);
+        const base64Decoded = (typeof atob === 'function')
+            ? atob(encodedText)
+            : Buffer.from(encodedText, 'base64').toString('binary');
+
+        const encBytes = new Uint8Array(base64Decoded.length);
+        for (let i = 0; i < base64Decoded.length; i++) {
+            encBytes[i] = base64Decoded.charCodeAt(i);
+        }
+
+        const encoder = new TextEncoder();
+        const passBytes = encoder.encode(password);
+        const resultBytes = new Uint8Array(encBytes.length);
+        for (let i = 0; i < encBytes.length; i++) {
+            resultBytes[i] = encBytes[i] ^ passBytes[i % passBytes.length];
+        }
+
+        const decoder = new TextDecoder('utf-8');
+        const decodedText = decoder.decode(resultBytes);
+        if (encryptedText.startsWith('ENCRYPTED2:')) {
+            if (!decodedText.startsWith('CLOAK:')) {
+                throw new Error('解密失败：密码可能不正确');
+            }
+            return decodedText.substring(6);
+        }
+
+        return decodedText;
+    }
+
+    static async decryptText(encryptedText, password) {
+        if (
+            !encryptedText.startsWith('ENCRYPTED3:')
+            && !encryptedText.startsWith('ENCRYPTED2:')
+            && !encryptedText.startsWith('ENCRYPTED:')
+        ) {
             return encryptedText;
         }
 
@@ -63,38 +201,73 @@ class Steganography {
         }
 
         try {
-            const encodedText = encryptedText.startsWith('ENCRYPTED2:')
-                ? encryptedText.substring(11)
-                : encryptedText.substring(10);
-            const base64Decoded = atob(encodedText);
+            if (encryptedText.startsWith('ENCRYPTED3:')) {
+                const encodedPayload = encryptedText.substring(11);
+                const decoder = new TextDecoder('utf-8');
+                const payloadString = decoder.decode(this._fromBase64(encodedPayload));
+                const payload = JSON.parse(payloadString);
+                const salt = this._fromBase64(payload.s);
+                const iv = this._fromBase64(payload.i);
+                const cipherBytes = this._fromBase64(payload.c);
 
-            const encBytes = new Uint8Array(base64Decoded.length);
-            for (let i = 0; i < base64Decoded.length; i++) {
-                encBytes[i] = base64Decoded.charCodeAt(i);
-            }
-
-            const encoder = new TextEncoder();
-            const passBytes = encoder.encode(password);
-
-            const resultBytes = new Uint8Array(encBytes.length);
-            for (let i = 0; i < encBytes.length; i++) {
-                resultBytes[i] = encBytes[i] ^ passBytes[i % passBytes.length];
-            }
-
-            const decoder = new TextDecoder('utf-8');
-            const decodedText = decoder.decode(resultBytes);
-
-            if (encryptedText.startsWith('ENCRYPTED2:')) {
-                if (!decodedText.startsWith('CLOAK:')) {
+                const cryptoProvider = this._getCryptoProvider();
+                const key = await this._deriveAesGcmKey(password, salt);
+                const decrypted = await cryptoProvider.subtle.decrypt(
+                    { name: 'AES-GCM', iv },
+                    key,
+                    cipherBytes
+                );
+                const decryptedText = decoder.decode(new Uint8Array(decrypted));
+                if (!decryptedText.startsWith('CLOAK3:')) {
                     throw new Error('解密失败：密码可能不正确');
                 }
-                return decodedText.substring(6);
+                return decryptedText.substring(7);
             }
 
-            return decodedText;
+            return this._decryptLegacyText(encryptedText, password);
         } catch (error) {
             throw new Error('解密失败：密码可能不正确');
         }
+    }
+
+    static async prepareMessage(message, password = '') {
+        let preparedMessage = message;
+        if (password && password.trim() !== '') {
+            preparedMessage = await this.encryptText(message, password);
+        }
+
+        const encoder = new TextEncoder();
+        const messageBytes = encoder.encode(preparedMessage);
+        return { preparedMessage, messageBytes };
+    }
+
+    static async estimateEncodedMessageBytes(message, password = '') {
+        const { messageBytes } = await this.prepareMessage(message, password);
+        return messageBytes.length;
+    }
+
+    static estimateEncryptedPayloadBytesFast(message) {
+        const encoder = new TextEncoder();
+        const plainBytes = encoder.encode(`CLOAK3:${message || ''}`);
+        const cipherBytesLength = plainBytes.length + 16; // AES-GCM auth tag
+
+        const saltBase64Len = this._base64Length(this.SALT_BYTES);
+        const ivBase64Len = this._base64Length(this.IV_BYTES);
+        const cipherBase64Len = this._base64Length(cipherBytesLength);
+
+        const payloadJsonLength =
+            `{"v":3,"s":"${'A'.repeat(saltBase64Len)}","i":"${'B'.repeat(ivBase64Len)}","c":"${'C'.repeat(cipherBase64Len)}"}`.length;
+        const wrappedBase64Len = this._base64Length(payloadJsonLength);
+
+        return 'ENCRYPTED3:'.length + wrappedBase64Len;
+    }
+
+    static estimateEncodedMessageBytesFast(message, password = '') {
+        const encoder = new TextEncoder();
+        if (!password || password.trim() === '') {
+            return encoder.encode(message || '').length;
+        }
+        return this.estimateEncryptedPayloadBytesFast(message);
     }
 
     static _getPixelData(image) {
@@ -119,17 +292,10 @@ class Steganography {
      * @returns {Promise<string>} - 返回包含隐藏信息的图片的 Data URL
      */
     static async encode(image, message, password = '', algorithm = 'lsb', outputOptions = {}) {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             try {
                 const { canvas, ctx, imageData, pixels } = this._getPixelData(image);
-
-                let preparedMessage = message;
-                if (password && password.trim() !== '') {
-                    preparedMessage = this.encryptText(message, password);
-                }
-
-                const encoder = new TextEncoder();
-                const messageBytes = encoder.encode(preparedMessage);
+                const { messageBytes } = await this.prepareMessage(message, password);
 
                 if (messageBytes.length <= 0) {
                     throw new Error('消息不能为空');
@@ -162,6 +328,7 @@ class Steganography {
                             const channelIndex = i % 3;
                             pixels[pixelIndex + channelIndex] &= 0xFD;
                             pixels[pixelIndex + channelIndex] |= (parseInt(lengthBinary[i], 10) << 1);
+                            await this._yieldToMainThread(i);
                         }
 
                         for (let i = 0; i < messageBinary.length; i++) {
@@ -169,6 +336,7 @@ class Steganography {
                             const channelIndex = (i + 32) % 3;
                             pixels[pixelIndex + channelIndex] &= 0xFD;
                             pixels[pixelIndex + channelIndex] |= (parseInt(messageBinary[i], 10) << 1);
+                            await this._yieldToMainThread(i);
                         }
                         break;
 
@@ -182,6 +350,7 @@ class Steganography {
                                 pixels[pixelIndex + channelIndex] |= (parseInt(lengthBinary[i + 1], 10) << 1);
                                 i++;
                             }
+                            await this._yieldToMainThread(i);
                         }
 
                         for (let i = 0; i < messageBinary.length; i++) {
@@ -193,6 +362,7 @@ class Steganography {
                                 pixels[pixelIndex + channelIndex] |= (parseInt(messageBinary[i + 1], 10) << 1);
                                 i++;
                             }
+                            await this._yieldToMainThread(i);
                         }
                         break;
 
@@ -203,6 +373,7 @@ class Steganography {
                             const channelIndex = i % 3;
                             pixels[pixelIndex + channelIndex] &= 0xFE;
                             pixels[pixelIndex + channelIndex] |= parseInt(lengthBinary[i], 10);
+                            await this._yieldToMainThread(i);
                         }
 
                         for (let i = 0; i < messageBinary.length; i++) {
@@ -210,6 +381,7 @@ class Steganography {
                             const channelIndex = (i + 32) % 3;
                             pixels[pixelIndex + channelIndex] &= 0xFE;
                             pixels[pixelIndex + channelIndex] |= parseInt(messageBinary[i], 10);
+                            await this._yieldToMainThread(i);
                         }
                         break;
                 }
@@ -238,7 +410,7 @@ class Steganography {
      * @returns {Promise<boolean>} - 返回是否包含隐写内容
      */
     static async hasHiddenContent(image) {
-        return new Promise((resolve) => {
+        return new Promise(async (resolve) => {
             try {
                 const { pixels } = this._getPixelData(image);
 
@@ -260,6 +432,7 @@ class Steganography {
                         const pixelIndex = Math.floor(i / 3) * 4 + 32;
                         const channelIndex = i % 3;
                         binaryData += ((pixels[pixelIndex + channelIndex] & 0x02) >> 1).toString();
+                        await this._yieldToMainThread(i);
                     }
                 } else if (detectedAlgorithm === 'patchwork') {
                     for (let i = 0; i < 32; i += 2) {
@@ -269,12 +442,14 @@ class Steganography {
                         if (i + 1 < 32) {
                             binaryData += ((pixels[pixelIndex + channelIndex] >> 1) & 0x01).toString();
                         }
+                        await this._yieldToMainThread(i);
                     }
                 } else {
                     for (let i = 0; i < 32; i++) {
                         const pixelIndex = Math.floor(i / 3) * 4 + 32;
                         const channelIndex = i % 3;
                         binaryData += (pixels[pixelIndex + channelIndex] & 0x01).toString();
+                        await this._yieldToMainThread(i);
                     }
                 }
 
@@ -294,7 +469,7 @@ class Steganography {
      * @returns {Promise<string>} - 返回提取出的文字
      */
     static async decode(image, password = '', algorithm = 'auto') {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             try {
                 const { pixels } = this._getPixelData(image);
 
@@ -314,6 +489,7 @@ class Steganography {
                             const pixelIndex = Math.floor(i / 3) * 4 + 32;
                             const channelIndex = i % 3;
                             binaryData += ((pixels[pixelIndex + channelIndex] & 0x02) >> 1).toString();
+                            await this._yieldToMainThread(i);
                         }
 
                         {
@@ -328,6 +504,7 @@ class Steganography {
                                 const pixelIndex = Math.floor((i + 32) / 3) * 4 + 32;
                                 const channelIndex = (i + 32) % 3;
                                 binaryData += ((pixels[pixelIndex + channelIndex] >> 1) & 0x01).toString();
+                                await this._yieldToMainThread(i);
                             }
                         }
                         break;
@@ -341,6 +518,7 @@ class Steganography {
                                 binaryData += ((pixels[pixelIndex + channelIndex] >> 1) & 0x01).toString();
                                 i++;
                             }
+                            await this._yieldToMainThread(i);
                         }
 
                         {
@@ -359,6 +537,7 @@ class Steganography {
                                     binaryData += ((pixels[pixelIndex + channelIndex] >> 1) & 0x01).toString();
                                     i++;
                                 }
+                                await this._yieldToMainThread(i);
                             }
                         }
                         break;
@@ -369,6 +548,7 @@ class Steganography {
                             const pixelIndex = Math.floor(i / 3) * 4 + 32;
                             const channelIndex = i % 3;
                             binaryData += (pixels[pixelIndex + channelIndex] & 0x01).toString();
+                            await this._yieldToMainThread(i);
                         }
 
                         {
@@ -386,6 +566,7 @@ class Steganography {
                                     break;
                                 }
                                 binaryData += (pixels[pixelIndex + channelIndex] & 0x01).toString();
+                                await this._yieldToMainThread(i);
                             }
                         }
                         break;
@@ -403,12 +584,12 @@ class Steganography {
                 const decoder = new TextDecoder('utf-8');
                 let message = decoder.decode(bytes);
 
-                if (message.startsWith('ENCRYPTED2:') || message.startsWith('ENCRYPTED:')) {
+                if (message.startsWith('ENCRYPTED3:') || message.startsWith('ENCRYPTED2:') || message.startsWith('ENCRYPTED:')) {
                     if (!password || password.trim() === '') {
                         resolve('PASSWORD_REQUIRED:' + message);
                         return;
                     }
-                    message = this.decryptText(message, password);
+                    message = await this.decryptText(message, password);
                 }
 
                 resolve(message);

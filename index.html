@@ -60,8 +60,6 @@
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <link rel="apple-touch-icon" href="icon-192x192.svg">
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js" defer></script>
-    <script src="bip39-wordlist.js" defer></script>
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -104,6 +102,7 @@
 </head>
 <body>
     <div class="container">
+        <div id="app-status" class="status-message" role="status" aria-live="polite"></div>
         <header class="header-container" role="banner">
             <h1 id="app-title">Cloak - 最安全的在线图片隐写术工具</h1>
             <nav class="language-selector" role="navigation" aria-label="语言选择">
@@ -264,11 +263,19 @@
                             <option value="patchwork">Patchwork</option>
                         </select>
                     </div>
+                    <p id="encode-capacity-status" class="capacity-status">Capacity estimate will appear after selecting an image.</p>
                     <div class="form-group">
                         <label id="label-auto-clear" class="checkbox-container">
                             <input type="checkbox" id="auto-clear-encode">
                             <span class="checkmark"></span>
                             <span id="auto-clear-text">Auto-clear sensitive data after encoding</span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="verify-before-download" checked>
+                            <span class="checkmark"></span>
+                            <span>Verify by decoding before enabling download</span>
                         </label>
                     </div>
                     <button id="encode-btn" class="action-btn">Encode</button>
@@ -389,6 +396,7 @@
                             <option value="patchwork">Patchwork</option>
                         </select>
                     </div>
+                    <p id="crypto-capacity-status" class="capacity-status">Capacity estimate will appear after selecting an image.</p>
                     
                     <div class="form-group">
                         <label for="crypto-image">Select Image:</label>
@@ -409,6 +417,13 @@
                             <input type="checkbox" id="auto-clear-crypto">
                             <span class="checkmark"></span>
                             <span id="auto-clear-crypto-text">Auto-clear sensitive data after encoding</span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="crypto-verify-before-download" checked>
+                            <span class="checkmark"></span>
+                            <span>Verify by decoding before enabling download</span>
                         </label>
                     </div>
                     
@@ -553,7 +568,6 @@
     </footer>
     
     <script src="steganography.js" defer></script>
-    <script src="i18n.js" defer></script>
     <script src="app.js" defer></script>
 </body>
 </html>

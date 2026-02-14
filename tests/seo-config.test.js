@@ -23,10 +23,10 @@ test('index.html removes duplicate meta author/theme-color tags', () => {
 });
 
 test('critical scripts are deferred to reduce render blocking', () => {
-  assert.match(indexHtml, /<script\s+src="https:\/\/cdn\.jsdelivr\.net\/npm\/qrcode@1\.5\.1\/build\/qrcode\.min\.js"\s+defer><\/script>/);
-  assert.match(indexHtml, /<script\s+src="bip39-wordlist\.js"\s+defer><\/script>/);
+  assert.doesNotMatch(indexHtml, /qrcode\.min\.js/);
+  assert.doesNotMatch(indexHtml, /bip39-wordlist\.js/);
   assert.match(indexHtml, /<script\s+src="steganography\.js"\s+defer><\/script>/);
-  assert.match(indexHtml, /<script\s+src="i18n\.js"\s+defer><\/script>/);
+  assert.doesNotMatch(indexHtml, /i18n\.js"\s+defer/);
   assert.match(indexHtml, /<script\s+src="app\.js"\s+defer><\/script>/);
 });
 
@@ -46,7 +46,8 @@ test('.htaccess normalizes www to apex', () => {
 test('i18n updates html lang and description meta dynamically', () => {
   assert.match(i18nJs, /document\.documentElement\.lang\s*=\s*this\.getHtmlLang\(\)/);
   assert.match(i18nJs, /meta\[name="description"\]/);
-  assert.match(i18nJs, /seo_description/);
+  assert.match(i18nJs, /ensureLanguagePackLoaded/);
+  assert.match(i18nJs, /loadLanguagePack/);
 });
 
 test('worker headers use Permissions-Policy and avoid deprecated Feature-Policy', () => {

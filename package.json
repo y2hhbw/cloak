@@ -6,13 +6,13 @@
   "scripts": {
     "dev": "wrangler dev",
     "publish": "wrangler publish",
-    "test": "node --test tests/seo-config.test.js"
+    "test": "node --test tests/seo-config.test.js tests/quality-optimizations.test.js"
   },
   "dependencies": {
     "@cloudflare/kv-asset-handler": "^0.3.0"
   },
   "devDependencies": {
-    "wrangler": "^3.19.0"
+    "wrangler": "^4.65.0"
   },
   "author": "",
   "license": "MIT"

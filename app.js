@@ -123,13 +123,137 @@ function setupDropArea(dropAreaId, fileInputId) {
     });
 }
 
+let qrcodeLibPromise = null;
+let bip39WordlistPromise = null;
+let i18nLibPromise = null;
+let i18nInitialized = false;
+const stegoWorkerSupported = typeof Worker !== 'undefined';
+let stegoWorker = null;
+let stegoWorkerRequestId = 0;
+const stegoWorkerPending = new Map();
+
+function ensureQRCodeLibrary() {
+    if (typeof QRCode !== 'undefined') {
+        return Promise.resolve();
+    }
+
+    if (qrcodeLibPromise) {
+        return qrcodeLibPromise;
+    }
+
+    qrcodeLibPromise = new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js';
+        script.async = true;
+        script.onload = () => resolve();
+        script.onerror = () => reject(new Error('Failed to load QR code library'));
+        document.head.appendChild(script);
+    });
+
+    return qrcodeLibPromise;
+}
+
+function getBip39Wordlist() {
+    return Array.isArray(globalThis.BIP39_WORDLIST) ? globalThis.BIP39_WORDLIST : [];
+}
+
+function ensureBip39Wordlist() {
+    const current = getBip39Wordlist();
+    if (current.length > 0) {
+        return Promise.resolve(current);
+    }
+
+    if (bip39WordlistPromise) {
+        return bip39WordlistPromise;
+    }
+
+    bip39WordlistPromise = new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = 'bip39-wordlist.js';
+        script.async = true;
+        script.onload = () => resolve(getBip39Wordlist());
+        script.onerror = () => reject(new Error('Failed to load BIP39 wordlist'));
+        document.head.appendChild(script);
+    });
+
+    return bip39WordlistPromise;
+}
+
+function ensureI18nLibrary() {
+    if (typeof I18N !== 'undefined') {
+        return Promise.resolve(I18N);
+    }
+
+    if (i18nLibPromise) {
+        return i18nLibPromise;
+    }
+
+    i18nLibPromise = new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = 'i18n.js';
+        script.async = true;
+        script.onload = () => {
+            if (typeof I18N === 'undefined') {
+                reject(new Error('I18N module not available after loading i18n.js'));
+                return;
+            }
+            resolve(I18N);
+        };
+        script.onerror = () => reject(new Error('Failed to load i18n library'));
+        document.head.appendChild(script);
+    });
+
+    return i18nLibPromise;
+}
+
+function getStegoWorker() {
+    if (!stegoWorkerSupported) return null;
+    if (stegoWorker) return stegoWorker;
+
+    stegoWorker = new Worker('stego-worker.js');
+    stegoWorker.addEventListener('message', (event) => {
+        const { id, ok, result, error } = event.data || {};
+        const pending = stegoWorkerPending.get(id);
+        if (!pending) return;
+        stegoWorkerPending.delete(id);
+        if (ok) pending.resolve(result);
+        else pending.reject(new Error(error || 'Stego worker execution failed'));
+    });
+    stegoWorker.addEventListener('error', (event) => {
+        stegoWorkerPending.forEach(({ reject }) => reject(new Error(event.message || 'Stego worker error')));
+        stegoWorkerPending.clear();
+        stegoWorker = null;
+    });
+    return stegoWorker;
+}
+
+function runStegoWorkerTask(action, payload) {
+    const worker = getStegoWorker();
+    if (!worker) return Promise.reject(new Error('Stego worker is not supported'));
+
+    const id = ++stegoWorkerRequestId;
+    return new Promise((resolve, reject) => {
+        stegoWorkerPending.set(id, { resolve, reject });
+        worker.postMessage({ id, action, payload });
+    });
+}
+
+function scheduleDeferredWarmup(task) {
+    if (typeof requestIdleCallback === 'function') {
+        requestIdleCallback(task, { timeout: 1200 });
+        return;
+    }
+    setTimeout(task, 250);
+}
+
 // 生成QR码功能
-function generateQRCode(text, canvasId, downloadBtnId, containerId) {
+async function generateQRCode(text, canvasId, downloadBtnId, containerId) {
     const qrcodeContainer = document.getElementById(containerId);
     const qrcodeCanvas = document.getElementById(canvasId);
     const downloadBtn = document.getElementById(downloadBtnId);
     
     if (!text || !qrcodeContainer || !qrcodeCanvas || !downloadBtn) return;
+    await ensureQRCodeLibrary();
     
     // 显示QR码容器
     qrcodeContainer.classList.remove('hidden');
@@ -154,7 +278,7 @@ function generateQRCode(text, canvasId, downloadBtnId, containerId) {
         }
         
         // 设置下载按钮事件
-        downloadBtn.addEventListener('click', () => {
+        downloadBtn.onclick = () => {
             // 创建临时链接下载QR码图片
             const link = document.createElement('a');
             link.download = 'qrcode.png';
@@ -162,11 +286,21 @@ function generateQRCode(text, canvasId, downloadBtnId, containerId) {
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-        });
+        };
     });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        await ensureI18nLibrary();
+        if (!i18nInitialized && typeof I18N !== 'undefined' && typeof I18N.init === 'function') {
+            await I18N.init();
+            i18nInitialized = true;
+        }
+    } catch (error) {
+        console.error('Failed to initialize i18n:', error);
+    }
+
     // Get DOM elements
     const tabBtns = document.querySelectorAll('.tab-btn');
     const tabPanes = document.querySelectorAll('.tab-pane');
@@ -261,7 +395,9 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (selectedType === 'recovery-phrase') {
                 privateKeyInput.classList.add('hidden');
                 recoveryPhraseInput.classList.remove('hidden');
+                ensureBip39Wordlist().catch(() => {});
             }
+            debouncedUpdateCryptoCapacity();
         });
     }
     const toggleCryptoDecodePasswordBtn = document.getElementById('toggle-crypto-decode-password');
@@ -271,6 +407,197 @@ document.addEventListener('DOMContentLoaded', () => {
     const cryptoCopyBtn = document.getElementById('crypto-copy-btn');
     const validatePhraseBtn = document.getElementById('validate-phrase-btn');
     const phraseValidationMessage = document.getElementById('phrase-validation-message');
+    const encodeCapacityStatus = document.getElementById('encode-capacity-status');
+    const cryptoCapacityStatus = document.getElementById('crypto-capacity-status');
+    const verifyBeforeDownloadCheckbox = document.getElementById('verify-before-download');
+    const cryptoVerifyBeforeDownloadCheckbox = document.getElementById('crypto-verify-before-download');
+    const appStatus = document.getElementById('app-status');
+    const imageMetaCache = new Map();
+    const MAX_IMAGE_META_CACHE = 24;
+    const CAPACITY_UPDATE_DEBOUNCE_MS = 120;
+
+    function setStatus(message) {
+        if (appStatus) {
+            appStatus.textContent = message || '';
+        }
+    }
+
+    function setCapacityStatus(target, message, level = 'normal') {
+        if (!target) return;
+        target.textContent = message;
+        target.classList.remove('warning', 'error');
+        if (level === 'warning') target.classList.add('warning');
+        if (level === 'error') target.classList.add('error');
+    }
+
+    function debounce(fn, wait) {
+        let timeoutId = null;
+        return (...args) => {
+            if (timeoutId) clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => {
+                timeoutId = null;
+                fn(...args);
+            }, wait);
+        };
+    }
+
+    async function getImageMetaForFile(file) {
+        if (!file) return null;
+        const key = `${file.name}:${file.size}:${file.lastModified}`;
+        const cached = imageMetaCache.get(key);
+        if (cached) {
+            imageMetaCache.delete(key);
+            imageMetaCache.set(key, cached);
+            return cached;
+        }
+        const image = await loadImage(file);
+        const meta = { width: image.width, height: image.height };
+        if (imageMetaCache.size >= MAX_IMAGE_META_CACHE) {
+            const firstKey = imageMetaCache.keys().next().value;
+            if (firstKey) imageMetaCache.delete(firstKey);
+        }
+        imageMetaCache.set(key, meta);
+        return meta;
+    }
+
+    async function estimateEncodedBytes(message, password) {
+        try {
+            return Steganography.estimateEncodedMessageBytesFast(message, password);
+        } catch (error) {
+            return new TextEncoder().encode(message || '').length;
+        }
+    }
+
+    async function updateEncodeCapacityStatus() {
+        if (!encodeCapacityStatus) return;
+        const file = encodeImageInput.files && encodeImageInput.files[0];
+        const message = secretMessageInput.value.trim();
+        const algorithm = document.getElementById('encode-algorithm').value;
+        const password = encodePasswordInput.value.trim();
+        if (!file) {
+            setCapacityStatus(encodeCapacityStatus, 'Capacity estimate will appear after selecting an image.');
+            return;
+        }
+        const meta = await getImageMetaForFile(file);
+        const maxBytes = Steganography.estimateMaxMessageBytes(meta.width, meta.height, algorithm);
+        const estimatedBytes = await estimateEncodedBytes(message, password);
+        const remaining = maxBytes - estimatedBytes;
+        const level = remaining < 0 ? 'error' : (remaining < 64 ? 'warning' : 'normal');
+        setCapacityStatus(
+            encodeCapacityStatus,
+            `Estimated payload ${estimatedBytes} / ${maxBytes} bytes (${remaining >= 0 ? remaining : 0} bytes free).`,
+            level
+        );
+    }
+
+    async function updateCryptoCapacityStatus() {
+        if (!cryptoCapacityStatus) return;
+        const file = cryptoImageInput.files && cryptoImageInput.files[0];
+        const algorithm = document.getElementById('crypto-algorithm').value;
+        const password = cryptoPasswordInput.value.trim();
+        if (!file) {
+            setCapacityStatus(cryptoCapacityStatus, 'Capacity estimate will appear after selecting an image.');
+            return;
+        }
+        let walletInfo = '';
+        if (cryptoTypeSelect.value === 'private-key') {
+            walletInfo = privateKeyField.value.trim();
+        } else {
+            walletInfo = Array.from(document.querySelectorAll('.phrase-word')).map((x) => x.value.trim()).filter(Boolean).join(' ');
+        }
+        const prefix = cryptoTypeSelect.value === 'private-key' ? 'PRIVATE_KEY:' : 'RECOVERY_PHRASE:';
+        const message = walletInfo ? prefix + walletInfo : '';
+        const meta = await getImageMetaForFile(file);
+        const maxBytes = Steganography.estimateMaxMessageBytes(meta.width, meta.height, algorithm);
+        const estimatedBytes = await estimateEncodedBytes(message, password);
+        const remaining = maxBytes - estimatedBytes;
+        const level = remaining < 0 ? 'error' : (remaining < 64 ? 'warning' : 'normal');
+        setCapacityStatus(
+            cryptoCapacityStatus,
+            `Estimated payload ${estimatedBytes} / ${maxBytes} bytes (${remaining >= 0 ? remaining : 0} bytes free).`,
+            level
+        );
+    }
+
+    async function verifyRoundTripDecode(dataUrl, password, algorithm, expectedMessage) {
+        let decoded = '';
+        if (stegoWorkerSupported) {
+            try {
+                decoded = await runStegoWorkerTask('decode', { dataUrl, password, algorithm });
+            } catch (error) {
+                const image = await loadImageFromDataUrl(dataUrl);
+                decoded = await Steganography.decode(image, password, algorithm);
+            }
+        } else {
+            const image = await loadImageFromDataUrl(dataUrl);
+            decoded = await Steganography.decode(image, password, algorithm);
+        }
+        if (decoded.startsWith('PASSWORD_REQUIRED:')) {
+            throw new Error('Verification failed: password was required during verification decode.');
+        }
+        return decoded === expectedMessage;
+    }
+
+    async function hasHiddenContentForFile(file) {
+        if (!file) return false;
+        if (stegoWorkerSupported) {
+            try {
+                const fileBytes = await file.arrayBuffer();
+                return await runStegoWorkerTask('hasHiddenContent', { fileBytes, fileType: file.type });
+            } catch (error) {
+                // fallback below
+            }
+        }
+        const image = await loadImage(file);
+        return Steganography.hasHiddenContent(image);
+    }
+
+    async function encodeMessageForFile(file, message, password, algorithm, outputOptions) {
+        if (stegoWorkerSupported) {
+            try {
+                const fileBytes = await file.arrayBuffer();
+                return await runStegoWorkerTask('encode', {
+                    fileBytes,
+                    fileType: file.type,
+                    message,
+                    password,
+                    algorithm,
+                    outputOptions
+                });
+            } catch (error) {
+                // fallback below
+            }
+        }
+
+        const image = await loadImage(file);
+        return Steganography.encode(image, message, password, algorithm, outputOptions);
+    }
+
+    async function decodeMessageForFile(file, password, algorithm) {
+        if (stegoWorkerSupported) {
+            try {
+                const fileBytes = await file.arrayBuffer();
+                return await runStegoWorkerTask('decode', {
+                    fileBytes,
+                    fileType: file.type,
+                    password,
+                    algorithm
+                });
+            } catch (error) {
+                // fallback below
+            }
+        }
+
+        const image = await loadImage(file);
+        return Steganography.decode(image, password, algorithm);
+    }
+
+    const debouncedUpdateEncodeCapacity = debounce(() => {
+        updateEncodeCapacityStatus().catch(() => {});
+    }, CAPACITY_UPDATE_DEBOUNCE_MS);
+    const debouncedUpdateCryptoCapacity = debounce(() => {
+        updateCryptoCapacityStatus().catch(() => {});
+    }, CAPACITY_UPDATE_DEBOUNCE_MS);
     
     // Generate phrase input fields
     function generatePhraseInputs(count) {
@@ -308,9 +635,13 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // 设置助记词验证功能
 function setupWordValidation(input) {
-    input.addEventListener('blur', function() {
+    input.addEventListener('blur', async function() {
         const word = this.value.trim().toLowerCase();
-        if (word && !BIP39_WORDLIST.includes(word)) {
+        if (word) {
+            await ensureBip39Wordlist().catch(() => {});
+        }
+        const wordlist = getBip39Wordlist();
+        if (word && !wordlist.includes(word)) {
             this.classList.add('invalid');
             this.classList.remove('valid');
             // 显示错误提示
@@ -342,7 +673,8 @@ function setupWordValidation(input) {
 }
     
     // 验证助记词是否有效
-    function validateMnemonicPhrase() {
+    async function validateMnemonicPhrase() {
+        await ensureBip39Wordlist().catch(() => {});
         const phraseInputs = document.querySelectorAll('.phrase-word');
         const words = [];
         let isValid = true;
@@ -358,7 +690,8 @@ function setupWordValidation(input) {
         }
         
         // 检查每个词是否在BIP39词汇表中
-        const allWordsValid = words.every(word => BIP39_WORDLIST.includes(word));
+        const wordlist = getBip39Wordlist();
+        const allWordsValid = words.every(word => wordlist.includes(word));
         
         // 检查词数是否正确
         const expectedCount = parseInt(phraseLengthSelect.value);
@@ -389,7 +722,7 @@ function setupWordValidation(input) {
     // 设置助记词自动补全功能
     function setupWordAutocomplete(inputElement, autocompleteContainer) {
         // 输入事件监听
-        inputElement.addEventListener('input', function() {
+        inputElement.addEventListener('input', async function() {
             const inputValue = this.value.toLowerCase().trim();
             
             // 清空自动补全容器
@@ -400,9 +733,12 @@ function setupWordValidation(input) {
                 autocompleteContainer.classList.add('hidden');
                 return;
             }
+
+            await ensureBip39Wordlist().catch(() => {});
+            const wordlist = getBip39Wordlist();
             
             // 查找匹配的词汇
-            const matchingWords = BIP39_WORDLIST.filter(word => 
+            const matchingWords = wordlist.filter(word => 
                 word.startsWith(inputValue)
             ).slice(0, 5); // 最多显示5个匹配项
             
@@ -506,8 +842,8 @@ function setupWordValidation(input) {
     generatePhraseInputs(12);
     
     // 助记词验证按钮点击事件
-    validatePhraseBtn.addEventListener('click', () => {
-        validateMnemonicPhrase();
+    validatePhraseBtn.addEventListener('click', async () => {
+        await validateMnemonicPhrase();
     });
     
     // 初始化拖放区域
@@ -515,6 +851,41 @@ function setupWordValidation(input) {
     setupDropArea('decode-drop-area', 'decode-image');
     setupDropArea('crypto-encode-drop-area', 'crypto-image');
     setupDropArea('crypto-decode-drop-area', 'crypto-decode-image');
+
+    scheduleDeferredWarmup(() => {
+        if (stegoWorkerSupported) {
+            getStegoWorker();
+        }
+    });
+
+    encodeImageInput.addEventListener('change', () => {
+        debouncedUpdateEncodeCapacity();
+    });
+    secretMessageInput.addEventListener('input', () => {
+        debouncedUpdateEncodeCapacity();
+    });
+    encodePasswordInput.addEventListener('input', () => {
+        debouncedUpdateEncodeCapacity();
+    });
+    document.getElementById('encode-algorithm').addEventListener('change', () => {
+        debouncedUpdateEncodeCapacity();
+    });
+
+    cryptoImageInput.addEventListener('change', () => {
+        debouncedUpdateCryptoCapacity();
+    });
+    cryptoPasswordInput.addEventListener('input', () => {
+        debouncedUpdateCryptoCapacity();
+    });
+    privateKeyField.addEventListener('input', () => {
+        debouncedUpdateCryptoCapacity();
+    });
+    document.getElementById('crypto-algorithm').addEventListener('change', () => {
+        debouncedUpdateCryptoCapacity();
+    });
+    phraseGrid.addEventListener('input', () => {
+        debouncedUpdateCryptoCapacity();
+    });
     
     // Tab switching functionality
     function switchToTab(tabId) {
@@ -530,6 +901,9 @@ function setupWordValidation(input) {
         const targetPane = document.getElementById(tabId);
         if (targetPane) {
             targetPane.classList.add('active');
+        }
+        if (tabId === 'crypto') {
+            ensureBip39Wordlist().catch(() => {});
         }
         
         // Reset result areas
@@ -577,6 +951,7 @@ function setupWordValidation(input) {
         } else {
             privateKeyInput.classList.add('hidden');
             recoveryPhraseInput.classList.remove('hidden');
+            ensureBip39Wordlist().catch(() => {});
         }
     }
     
@@ -590,6 +965,7 @@ function setupWordValidation(input) {
     phraseLengthSelect.addEventListener('change', () => {
         const wordCount = parseInt(phraseLengthSelect.value);
         generatePhraseInputs(wordCount);
+        updateCryptoCapacityStatus().catch(() => {});
     });
     
     // Toggle password visibility functions
@@ -625,15 +1001,16 @@ function setupWordValidation(input) {
     });
     
     // 自动清除功能
-    function clearSensitiveData(type) {
-        if (type === 'encode' && autoClearEncodeCheckbox.checked) {
+    function clearSensitiveData(type, force = false) {
+        if (type === 'encode' && (force || autoClearEncodeCheckbox.checked)) {
             secretMessageInput.value = '';
             encodePasswordInput.value = '';
             // 重置编码拖放区域
             resetDropArea('encode-drop-area');
             // 清除文件输入
             if (encodeImageInput) encodeImageInput.value = '';
-        } else if (type === 'crypto' && autoClearCryptoCheckbox.checked) {
+            setCapacityStatus(encodeCapacityStatus, 'Capacity estimate will appear after selecting an image.');
+        } else if (type === 'crypto' && (force || autoClearCryptoCheckbox.checked)) {
             privateKeyField.value = '';
             const phraseInputs = document.querySelectorAll('.phrase-word');
             phraseInputs.forEach(input => input.value = '');
@@ -642,8 +1019,22 @@ function setupWordValidation(input) {
             resetDropArea('crypto-encode-drop-area');
             // 清除文件输入
             if (cryptoImageInput) cryptoImageInput.value = '';
+            setCapacityStatus(cryptoCapacityStatus, 'Capacity estimate will appear after selecting an image.');
         }
     }
+
+    function clearSensitiveDataForLifecycle() {
+        if (autoClearEncodeCheckbox.checked) clearSensitiveData('encode', true);
+        if (autoClearCryptoCheckbox.checked) clearSensitiveData('crypto', true);
+        setStatus('Sensitive fields were cleared due to page lifecycle change.');
+    }
+
+    window.addEventListener('beforeunload', clearSensitiveDataForLifecycle);
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'hidden') {
+            clearSensitiveDataForLifecycle();
+        }
+    });
     
     // 水印检测功能
     async function checkForWatermark(imageInput, warningElement) {
@@ -654,8 +1045,7 @@ function setupWordValidation(input) {
         
         try {
             const file = imageInput.files[0];
-            const image = await loadImage(file);
-            const hasWatermark = await Steganography.hasHiddenContent(image);
+            const hasWatermark = await hasHiddenContentForFile(file);
             
             if (warningElement) {
                 if (hasWatermark) {
@@ -749,16 +1139,15 @@ function setupWordValidation(input) {
         }
         
         try {
+            setStatus('Wallet encoding in progress...');
             // Show loading state
             cryptoEncodeBtn.disabled = true;
             cryptoEncodeBtn.textContent = 'Processing...';
             
-            // Load the selected image
             const file = cryptoImageInput.files[0];
-            const image = await loadImage(file);
             
             // 检查图片是否已包含隐写内容
-            const hasWatermark = await Steganography.hasHiddenContent(image);
+            const hasWatermark = await hasHiddenContentForFile(file);
             if (hasWatermark && !confirm('This image already contains hidden data. Proceeding will overwrite it. Continue?')) {
                 cryptoEncodeBtn.disabled = false;
                 cryptoEncodeBtn.textContent = 'Encode Wallet Info';
@@ -773,11 +1162,32 @@ function setupWordValidation(input) {
             const password = cryptoPasswordInput.value.trim();
             
             // 获取选择的隐写算法
-            const algorithm = document.getElementById('crypto-encode-algorithm').value;
+            const algorithm = document.getElementById('crypto-algorithm').value;
+
+            const meta = await getImageMetaForFile(file);
+            const maxBytes = Steganography.estimateMaxMessageBytes(meta.width, meta.height, algorithm);
+            const estimatedBytes = await estimateEncodedBytes(messageToEncode, password);
+            if (estimatedBytes > maxBytes) {
+                throw new Error(`Wallet payload is too large for this image (${estimatedBytes}/${maxBytes} bytes).`);
+            }
             
             // Use steganography tool to encode the message with password and algorithm
             const outputOptions = getStegoOutputOptions(file);
-            const encodedDataURL = await Steganography.encode(image, messageToEncode, password, algorithm, outputOptions);
+            const encodedDataURL = await encodeMessageForFile(
+                file,
+                messageToEncode,
+                password,
+                algorithm,
+                outputOptions
+            );
+
+            if (cryptoVerifyBeforeDownloadCheckbox && cryptoVerifyBeforeDownloadCheckbox.checked) {
+                setStatus('Verifying encoded wallet output...');
+                const valid = await verifyRoundTripDecode(encodedDataURL, password, algorithm, messageToEncode);
+                if (!valid) {
+                    throw new Error('Verification failed: decoded wallet data did not match input.');
+                }
+            }
             
             // Display the result
             cryptoEncodedImage.src = encodedDataURL;
@@ -794,8 +1204,10 @@ function setupWordValidation(input) {
             
             // 自动清除敏感数据
             clearSensitiveData('crypto');
+            setStatus('Wallet encoding completed successfully.');
         } catch (error) {
             alert('Encoding failed: ' + error.message);
+            setStatus('Wallet encoding failed. See alert details.');
         } finally {
             // Restore button state
             cryptoEncodeBtn.disabled = false;
@@ -816,9 +1228,7 @@ function setupWordValidation(input) {
             cryptoDecodeBtn.disabled = true;
             cryptoDecodeBtn.textContent = 'Processing...';
             
-            // Load the selected image
             const file = cryptoDecodeImageInput.files[0];
-            const image = await loadImage(file);
             
             // Get password if provided
             const password = cryptoDecodePasswordInput.value.trim();
@@ -827,7 +1237,7 @@ function setupWordValidation(input) {
             const algorithm = document.getElementById('crypto-decode-algorithm').value;
             
             // Use steganography tool to decode the message with password and algorithm
-            let message = await Steganography.decode(image, password, algorithm);
+            let message = await decodeMessageForFile(file, password, algorithm);
             
             // Check if password is required
             if (message.startsWith('PASSWORD_REQUIRED:')) {
@@ -893,20 +1303,32 @@ function setupWordValidation(input) {
     });
     
     // Copy crypto decoded result
-    cryptoCopyBtn.addEventListener('click', () => {
-        cryptoDecodedMessage.select();
-        document.execCommand('copy');
-        alert('Text copied to clipboard');
+    cryptoCopyBtn.addEventListener('click', async () => {
+        try {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                await navigator.clipboard.writeText(cryptoDecodedMessage.value || '');
+            } else {
+                cryptoDecodedMessage.select();
+                document.execCommand('copy');
+            }
+            setStatus('Wallet text copied to clipboard.');
+        } catch (error) {
+            alert('Failed to copy text: ' + error.message);
+        }
     });
     
     // Generate QR code for crypto wallet decoded message
     const cryptoGenerateQrBtn = document.getElementById('crypto-generate-qr-btn');
     const cryptoQrcodeContainer = document.getElementById('crypto-qrcode-container');
     if (cryptoGenerateQrBtn && cryptoQrcodeContainer) {
-        cryptoGenerateQrBtn.addEventListener('click', () => {
+        cryptoGenerateQrBtn.addEventListener('click', async () => {
             const cryptoDecodedMessage = document.getElementById('crypto-decoded-message');
             if (cryptoDecodedMessage && cryptoDecodedMessage.value) {
-                generateQRCode(cryptoDecodedMessage.value, 'crypto-qrcode-canvas', 'crypto-download-qr-btn', 'crypto-qrcode-container');
+                try {
+                    await generateQRCode(cryptoDecodedMessage.value, 'crypto-qrcode-canvas', 'crypto-download-qr-btn', 'crypto-qrcode-container');
+                } catch (error) {
+                    alert('Failed to generate QR code: ' + error.message);
+                }
             } else {
                 alert('No decoded message available to generate QR code');
             }
@@ -929,16 +1351,15 @@ function setupWordValidation(input) {
         }
         
         try {
+            setStatus('Encoding in progress...');
             // Show loading state
             encodeBtn.disabled = true;
             encodeBtn.textContent = 'Processing...';
             
-            // Load the selected image
             const file = encodeImageInput.files[0];
-            const image = await loadImage(file);
             
             // 检查图片是否已包含隐写内容
-            const hasWatermark = await Steganography.hasHiddenContent(image);
+            const hasWatermark = await hasHiddenContentForFile(file);
             if (hasWatermark && !confirm('This image already contains hidden data. Proceeding will overwrite it. Continue?')) {
                 encodeBtn.disabled = false;
                 encodeBtn.textContent = 'Encode Message';
@@ -950,10 +1371,31 @@ function setupWordValidation(input) {
             
             // 获取选择的隐写算法
             const algorithm = document.getElementById('encode-algorithm').value;
+
+            const meta = await getImageMetaForFile(file);
+            const maxBytes = Steganography.estimateMaxMessageBytes(meta.width, meta.height, algorithm);
+            const estimatedBytes = await estimateEncodedBytes(message, password);
+            if (estimatedBytes > maxBytes) {
+                throw new Error(`Message is too large for this image and algorithm (${estimatedBytes}/${maxBytes} bytes).`);
+            }
             
             // Use steganography tool to encode the message with password and algorithm
             const outputOptions = getStegoOutputOptions(file);
-            const encodedDataURL = await Steganography.encode(image, message, password, algorithm, outputOptions);
+            const encodedDataURL = await encodeMessageForFile(
+                file,
+                message,
+                password,
+                algorithm,
+                outputOptions
+            );
+
+            if (verifyBeforeDownloadCheckbox && verifyBeforeDownloadCheckbox.checked) {
+                setStatus('Verifying encoded output...');
+                const valid = await verifyRoundTripDecode(encodedDataURL, password, algorithm, message);
+                if (!valid) {
+                    throw new Error('Verification failed: decoded content did not match the original message.');
+                }
+            }
             
             // Display the result
             encodedImage.src = encodedDataURL;
@@ -970,8 +1412,10 @@ function setupWordValidation(input) {
             
             // 自动清除敏感数据
             clearSensitiveData('encode');
+            setStatus('Encoding completed successfully.');
         } catch (error) {
             alert('Encoding failed: ' + error.message);
+            setStatus('Encoding failed. See alert details.');
         } finally {
             // Restore button state
             encodeBtn.disabled = false;
@@ -992,9 +1436,7 @@ function setupWordValidation(input) {
             decodeBtn.disabled = true;
             decodeBtn.textContent = 'Processing...';
             
-            // Load the selected image
             const file = decodeImageInput.files[0];
-            const image = await loadImage(file);
             
             // Get password if provided
             const password = decodePasswordInput.value.trim();
@@ -1003,7 +1445,7 @@ function setupWordValidation(input) {
             const algorithm = document.getElementById('decode-algorithm').value;
             
             // Use steganography tool to decode the message with password and algorithm
-            let message = await Steganography.decode(image, password, algorithm);
+            let message = await decodeMessageForFile(file, password, algorithm);
             
             // Check if password is required
             if (message.startsWith('PASSWORD_REQUIRED:')) {
@@ -1027,20 +1469,32 @@ function setupWordValidation(input) {
     });
     
     // Copy decoded result
-    copyBtn.addEventListener('click', () => {
-        decodedMessage.select();
-        document.execCommand('copy');
-        alert('Text copied to clipboard');
+    copyBtn.addEventListener('click', async () => {
+        try {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                await navigator.clipboard.writeText(decodedMessage.value || '');
+            } else {
+                decodedMessage.select();
+                document.execCommand('copy');
+            }
+            setStatus('Text copied to clipboard.');
+        } catch (error) {
+            alert('Failed to copy text: ' + error.message);
+        }
     });
     
     // Generate QR code button click event
     const generateQrBtn = document.getElementById('generate-qr-btn');
     const qrcodeContainer = document.getElementById('qrcode-container');
     if (generateQrBtn && qrcodeContainer) {
-        generateQrBtn.addEventListener('click', () => {
+        generateQrBtn.addEventListener('click', async () => {
             const decodedMessage = document.getElementById('decoded-message');
             if (decodedMessage && decodedMessage.value) {
-                generateQRCode(decodedMessage.value, 'qrcode-canvas', 'download-qr-btn', 'qrcode-container');
+                try {
+                    await generateQRCode(decodedMessage.value, 'qrcode-canvas', 'download-qr-btn', 'qrcode-container');
+                } catch (error) {
+                    alert('Failed to generate QR code: ' + error.message);
+                }
             } else {
                 alert('No decoded message available to generate QR code');
             }
@@ -1059,6 +1513,15 @@ function setupWordValidation(input) {
             };
             reader.onerror = () => reject(new Error('File reading failed'));
             reader.readAsDataURL(file);
+        });
+    }
+
+    function loadImageFromDataUrl(dataUrl) {
+        return new Promise((resolve, reject) => {
+            const image = new Image();
+            image.onload = () => resolve(image);
+            image.onerror = () => reject(new Error('Generated image loading failed'));
+            image.src = dataUrl;
         });
     }
 });
